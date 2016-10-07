@@ -1,4 +1,4 @@
-Qualisys Realtime SDK for Python
+Qualisys SDK for Python
 ================================
 
 Installation
@@ -14,7 +14,7 @@ python -m pip install qtm
 It's also possible to install from github:
 
 ```
-python -m pip install git+http://url
+python -m pip install git+https://github.com/qualisys/qualisys_python_sdk.git
 ```
 
 Or just clone the repo and copy the qtm folder into you project folder, 
