@@ -10,10 +10,13 @@ extras = {
         ":sys_platform=='win32'": ['pypiwin32']
         }
 
+version = '1.0.1'
+
 setup(name='qtm',
-      version='1.0',
+      version=version,
       description='QTM Python SDK',
       url='https://github.com/qualisys/qualisys_python_sdk',
+      download_url='https://github.com/qualisys/qualisys_python_sdk/tarball/{}'.format(version),
       author='Martin Gejke',
       author_email='support@qualisys.com',
       license='MIT',
