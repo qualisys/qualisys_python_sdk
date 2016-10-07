@@ -27,6 +27,11 @@ Dependencies
 * enum34 for Python versions lower than 3.4
 * pywin32 for windows (can be installed with pip as pypiwin32)
 
+Documentation
+-------------
+
+https://qualisys.github.io/qualisys_python_sdk/index.html
+
 Examples
 --------
 
