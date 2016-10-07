@@ -1,0 +1,12 @@
+/build
+/dist
+/qtm.egg-info
+/env
+/env3
+/.idea
+_build
+_static
+_templates
+*.pyc
+*.pyproj
+*.sublime-*
