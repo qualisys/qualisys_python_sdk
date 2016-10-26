@@ -1,6 +1,8 @@
 Qualisys SDK for Python
 ================================
 
+The Qualisys SDK for Python implements our RealTime(RT) and REST SDKs and works with Python 2.7 and 3.
+
 Installation
 ------------
 
