@@ -100,6 +100,11 @@ RTImageComponent.format = struct.Struct("<i")
 RTImage = namedtuple('RTImage', 'id format width height left_crop top_crop right_crop bottom_crop image_size')
 RTImage.format = struct.Struct("<iiiiffffi")
 
+RTTimecodeComponent = namedtuple('RTTimecodeComponent', 'timecode_count')
+RTTimecodeComponent.format = struct.Struct('<i')
+
+RTTimecode = namedtuple('RTTimecode', 'type high low')
+RTTimecode.format = struct.Struct('<iII')
 
 class QRTPacketType(Enum):
     PacketError = 0
@@ -132,6 +137,7 @@ class QRTComponentType(Enum):
     ComponentForceSingle = 15
     ComponentGazeVector = 16
     ComponentNone = 17
+    ComponentTimecode = 18
 
 
 class QRTImageFormat(Enum):
@@ -361,6 +367,16 @@ class QRTPacket(object):
             component_position, image_info = QRTPacket._get_exact(RTImage, data, component_position)
             append_components((image_info, data[component_position:-1]))
         return components
+
+    @component_getter(QRTComponentType.ComponentTimecode, RTTimecodeComponent)
+    def get_timecode(self, component_info=None, data=None, component_position=None):
+        """Get Timecode."""
+        components = []
+        append_components = components.append
+        for j in range(component_info.timecode_count):
+            component_position, timecode = QRTPacket._get_exact(RTTimecode, data, component_position)
+            append_components((timecode, data[component_position:-1]))
+        return components        
 
     @component_getter(QRTComponentType.Component3d, RT3DComponent)
     def get_3d_markers(self, component_info=None, data=None, component_position=None):
