@@ -10,3 +10,4 @@ _templates
 *.pyc
 *.pyproj
 *.sublime-*
+/.vscode
