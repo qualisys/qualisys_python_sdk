@@ -161,9 +161,10 @@ class QRTEvent(Enum):
     EventCameraSettingsChanged = 11
     EventQTMShuttingDown = 12
     EventCaptureSaved = 13
-    ReprocessingStarted = 14
-    ReprocessingStopped = 15
-    EventNone = 16  # Must be the last. Not actually an event. Just used to cont number of events.
+    EventReprocessingStarted = 14
+    EventReprocessingStopped = 15
+    EventTrigger = 16
+    EventNone = 17  # Must be the last. Not actually an event. Just used to cont number of events.
 
 
 class component_getter(object):
