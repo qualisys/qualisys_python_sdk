@@ -269,7 +269,7 @@ class QRTConnection(object):
 
     def set_qtm_event(self, event=None, on_ok=None, on_error=None):
         """Set event in QTM."""
-        cmd = "event%s" % "" if event is None else " " + event
+        cmd = "event%s" % ("" if event is None else " " + event)
         d = self.protocol.send_command(cmd)
         d.addCallback(_response_validator,
                       expected_responses=[b'Event set'])
