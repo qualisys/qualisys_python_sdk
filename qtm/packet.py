@@ -136,8 +136,8 @@ class QRTComponentType(Enum):
     ComponentImage = 14
     ComponentForceSingle = 15
     ComponentGazeVector = 16
-    ComponentNone = 17
-    ComponentTimecode = 18
+    ComponentTimecode = 17
+    ComponentNone = 18    
 
 
 class QRTImageFormat(Enum):
