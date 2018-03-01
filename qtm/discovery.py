@@ -15,29 +15,6 @@ QRTDiscoveryBasePort = struct.Struct(">H")
 
 QRTDiscoveryResponse = namedtuple('QRTDiscoveryResponse', 'info host port')
 
-# async def discover(ip_address):
-#     queue = asyncio.Queue()
-
-#     protocol_factory = lambda: QRTDiscoveryProtocol(receiver=queue.put_nowait)
-
-#     loop = asyncio.get_event_loop()
-#     _, protocol = await loop.create_datagram_endpoint(
-#         protocol_factory,
-#         local_addr=(ip_address, 0),
-#         allow_broadcast=True,
-#         reuse_address=True)
-
-#     protocol.send_discovery_packet()
-
-#     while True:
-#         call_handle = loop.call_later(0.2, lambda: queue.put_nowait(None))
-#         result = await queue.get()
-#         if result is None:
-#             break
-
-#         call_handle.cancel()
-#         yield result
-
 
 class discover:
     """Yield numbers from 0 to `to` every `delay` seconds."""
