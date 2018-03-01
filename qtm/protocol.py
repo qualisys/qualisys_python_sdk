@@ -1,23 +1,13 @@
+import asyncio
 import struct
-from enum import Enum
+import collections
+import logging
 
-from twisted.internet import defer
-from twisted.internet.protocol import Factory, Protocol
+from qtm.packet import QRTPacketType
+from qtm.packet import QRTPacket, QRTEvent
+from qtm.packet import RTheader, RTEvent, RTCommand
 
-from qtm.packet import QRTPacketType, QRTPacket, QRTEvent
-
-
-RTheader = struct.Struct("<II")
-RTEvent = struct.Struct("<c")
-
-RTCommand = "<II%dsc"
-
-
-class QRTLoggerInfo(Enum):
-    Sent = 0
-    Received = 1
-    Error = 2
-    Event = 3
+logger = logging.getLogger(__name__)
 
 
 class QRTCommandException(Exception):
@@ -28,62 +18,81 @@ class QRTCommandException(Exception):
         return repr(self.value)
 
 
-# noinspection PyPep8Naming
-class QRTProtocol(Protocol):
-    def __init__(self, version, on_disconnect=None, on_event=None, logger=None):
-        self.version_checked = False
-        self.received_data = b''
-        self.version = version
+class QTMProtocol(asyncio.Protocol):
+    def __init__(self, loop, on_disconnect=None, on_event=None):
+        self._received_data = b''
 
         self.on_disconnect = on_disconnect
         self.on_event = on_event
-        self.logger = logger
-
         self.on_packet = None
 
-        self.connected_d = defer.Deferred()
+        self.request_queue = collections.deque()
+        self.event_future = None
+        self._start_streaming = False
 
-        self.request_queue = []
+        self._handlers = {
+            QRTPacketType.PacketError: self._on_error,
+            QRTPacketType.PacketData: self._on_data,
+            QRTPacketType.PacketCommand: self._on_command,
+            QRTPacketType.PacketEvent: self._on_event,
+            QRTPacketType.PacketXML: self._on_xml
+        }
 
-    @defer.inlineCallbacks
-    def get_version(self):
-        version_cmd = "Version %s" % self.version
-        try:
-            self.version_checked = True
-            result = yield self.send_command(version_cmd)
-        except QRTCommandException as e:
-            self.connected_d.errback(e)
-        else:
-            self.connected_d.callback(result)
+    async def set_version(self, version):
+        version_cmd = "version %s" % version
+        # No need to check response, will throw if error
+        await self.send_command(version_cmd)
 
+    async def _wait_loop(self, event):
+        while True:
+            self.event_future = asyncio.get_event_loop().create_future()
+            result = await self.event_future
 
-    def send_command(self, command, callback=True, command_type=QRTPacketType.PacketCommand):
-        if self.logger:
-            self.logger(command, QRTLoggerInfo.Sent)
+            if event is None or event == result:
+                break
+        return result
 
-        cmd_length = len(command)
-        self.transport.write(struct.pack(RTCommand % cmd_length, RTheader.size + cmd_length + 1,
-                                         command_type.value, command.encode(), b'\0'))
-        d = None
-        if callback:
-            d = defer.Deferred()
-            self.request_queue.append(d)
+    async def await_event(self, event=None, timeout=None):
+        if self.event_future is not None:
+            raise Exception("Can't wait on multiple events!")
 
-        return d
+        result = await asyncio.wait_for(self._wait_loop(event), timeout)
+        return result
 
+    def send_command(self,
+                     command,
+                     callback=True,
+                     command_type=QRTPacketType.PacketCommand):
 
-    def connectionMade(self):
-        self.transport.setTcpNoDelay(True)
+        if self.transport is not None:
+            cmd_length = len(command)
+            logger.debug("S: %s", command)
+            self.transport.write(
+                struct.pack(RTCommand % cmd_length,
+                            RTheader.size + cmd_length + 1, command_type.value,
+                            command.encode(), b'\0'))
 
-    def connectionLost(self, reason):
-        if self.on_disconnect:
-            self.on_disconnect(reason.getErrorMessage())
+            future = None
+            if callback:
+                future = asyncio.get_event_loop().create_future()
+                self.request_queue.append(future)
+            return future
 
-    def dataReceived(self, data):
-        self.received_data += data
+        raise QRTCommandException("Not connected!")
+
+    def connection_made(self, transport):
+        logger.info('Connected')
+        self.transport = transport
+
+    def set_on_packet(self, on_packet):
+        self.on_packet = on_packet
+        self._start_streaming = on_packet != None
+
+    def data_received(self, data):
+        self._received_data += data
         h_size = RTheader.size
 
-        data = self.received_data
+        data = self._received_data
         size, type_ = RTheader.unpack_from(data, 0)
 
         while len(data) >= size:
@@ -95,77 +104,71 @@ class QRTProtocol(Protocol):
 
             size, type_ = RTheader.unpack_from(data, 0)
 
-        self.received_data = data
+        self._received_data = data
 
-    def set_on_packet(self, on_packet):
-        self.on_packet = on_packet
+    def _deliver_promise(self, data):
+        try:
+            future = self.request_queue.pop()
+            future.set_result(data)
+        except IndexError:
+            pass
+
+    def _on_data(self, data):
+        packet = QRTPacket(data)
+
+        if self.on_packet is not None:
+            if self._start_streaming:
+                self._deliver_promise(b'Ok')
+                self._start_streaming = False
+
+            self.on_packet(packet)
+        else:
+            self._deliver_promise(packet)
+        return
+
+    def _on_event(self, data):
+        event, = RTEvent.unpack(data)
+        event = QRTEvent(ord(event))
+        logger.info(event)
+
+        if self.event_future is not None:
+            future, self.event_future = self.event_future, None
+            future.set_result(event)
+
+        if self.on_event:
+            self.on_event(event)
+
+    def _on_error(self, data):
+        response = data[:-1]
+        logger.debug("Error: %s", response)
+        if self._start_streaming:
+            self.set_on_packet(None)
+        try:
+            future = self.request_queue.pop()
+            future.set_exception(QRTCommandException(response))
+        except IndexError:
+            raise QRTCommandException(response)
+
+    def _on_xml(self, data):
+        response = data[:-1]
+        logger.debug("XML: %s ...", data[:min(len(response), 70)])
+        self._deliver_promise(data[:-1])
+
+    def _on_command(self, data):
+        response = data[:-1]
+        logger.debug("R: %s", response)
+        if response != b'QTM RT Interface connected':
+            self._deliver_promise(response)
 
     def parse_received(self, data, type_):
         type_ = QRTPacketType(type_)
-        # print data, type_
+        try:
+            self._handlers[type_](data)
+        except KeyError:
+            logger.error('Non handled packet type!')
 
-        # never any callbacks
-        if type_ == QRTPacketType.PacketEvent:
-            event, = RTEvent.unpack(data)
-            event = QRTEvent(ord(event))
-
-            if self.logger:
-                self.logger(event.name, QRTLoggerInfo.Event)
-
-            if self.on_event:
-                self.on_event(event)
-            return
-
-        # Get a deferred to return result
-        d = self.request_queue.pop(0) if len(self.request_queue) > 0 else None
-
-        if type_ == QRTPacketType.PacketError:
-            response = data[:-1]
-            if self.logger:
-                self.logger(response, QRTLoggerInfo.Error)
-
-            if d:
-                d.errback(QRTCommandException(response))
-
-        elif type_ == QRTPacketType.PacketXML:
-            response = data[:-1]
-
-            if d:
-                d.callback(response)
-
-        elif type_ == QRTPacketType.PacketCommand:
-            response = data[:-1]
-
-            if not self.version_checked:
-                self.get_version()
-
-            if self.logger:
-                self.logger(response, QRTLoggerInfo.Received)
-
-            if d:
-                d.callback(response)
-
-        elif type_ == QRTPacketType.PacketData:
-            if d:
-               d.callback('Ok')
-
-            packet = QRTPacket(data)
-            if self.on_packet:
-                self.on_packet(packet)
-
-
-
-class QRTFactory(Factory):
-    protocol = QRTProtocol
-
-    def __init__(self, version, on_disconnect=None, on_event=None, logger=None):
-        self.version = version
-        self.logger = logger
-
-        self.on_disconnect = on_disconnect
-        self.on_event = on_event
-
-    def buildProtocol(self, addr):
-        p = self.protocol(self.version, self.on_disconnect, self.on_event, self.logger)
-        p.factory = self
-        return p
+    def connection_lost(self, exc):
+        self.transport = None
+        logger.info('Disconnected')
+        if self.on_disconnect is not None:
+            self.on_disconnect(exc)

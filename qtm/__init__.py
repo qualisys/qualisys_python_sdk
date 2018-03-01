@@ -1,20 +1,37 @@
-from twisted.internet import reactor
-
-from .discovery import QRTDiscoveryProtocol, QRTDiscoveryResponse
-from .reboot import QRebootProtocol
+from .discovery import discover
+from .reboot import reboot
+from .qrt import connect
 from .packet import QRTPacket, QRTEvent
-from .protocol import QRTCommandException, QRTLoggerInfo
-from .qrt import QRT, QRTConnection
+from .protocol import QRTCommandException
 from .rest import QRest
 
+import logging
+import os
 
-def start():
-    reactor.run()
+logger = logging.getLogger('qtm')
+log = os.getenv('QTM_LOGGING', None)
+if log is not None:
 
-def stop():
-    reactor.stop()
+    level = logging.DEBUG if log == 'debug' else logging.INFO
 
-def call_later(seconds, function, *args, **kwargs):
-    reactor.callLater(seconds, function, *args, **kwargs)
+    logging.basicConfig(
+        level=level,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+
+class take_control(object):
+    def __init__(self, connection, password):
+        self.connection = connection
+        self.password = password
+
+    async def __aenter__(self):
+        await self.connection.take_control(self.password)
+        logger.info('Took control')
+
+    async def __aexit__(self, exc_type, exc, tb):
+        if self.connection._protocol.transport is not None:
+            await self.connection.release_control()
+            logger.info('Released control')
+
 
 __author__ = 'mge'

@@ -2,10 +2,6 @@ import json
 
 from functools import wraps
 
-from twisted.internet import defer
-from twisted.web.client import getPage
-from twisted.web.error import Error
-
 
 class RestError(Exception):
     def __init__(self, code, error):
@@ -22,12 +18,14 @@ def filter_function(result, filter):
     return None
 
 
-@defer.inlineCallbacks
+# @defer.inlineCallbacks
 def _get_page(self, method, url, data=None):
     try:
-        response = yield getPage(url, method=method,
-                                 headers={b'Content-Type': b'application/json'},
-                                 postdata=data)
+        response = yield getPage(
+            url,
+            method=method,
+            headers={b'Content-Type': b'application/json'},
+            postdata=data)
     except Error as e:
         raise RestError(int(e.status), e.response)
     except Exception as e:
@@ -57,8 +55,12 @@ def rest_endpoint(method, endpoint='/', filter=None):
                 data = kwargs.pop('data', None)
 
             # try to get page
-            d = _get_page(self, method.encode(), '{base}{endpoint}'.format(base=self.url, endpoint=endpoint).encode(),
-                          data=json.dumps(data).encode())
+            d = _get_page(
+                self,
+                method.encode(),
+                '{base}{endpoint}'.format(base=self.url,
+                                          endpoint=endpoint).encode(),
+                data=json.dumps(data).encode())
 
             if filter is not None:
                 d.addCallback(filter_function, filter)
