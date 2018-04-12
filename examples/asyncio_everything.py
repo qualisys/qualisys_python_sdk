@@ -48,7 +48,7 @@ async def main():
         await connection.get_state()
         await connection.byte_order()
 
-        async with qtm.take_control(connection, 'gait1'):
+        async with qtm.take_control(connection, 'password'):
 
             await connection.load(r'd:\measurements\demo_2018\David ROM 1.qtm')
 
