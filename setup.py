@@ -18,8 +18,8 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',
         'Topic :: Scientific/Engineering', 'Topic :: Utilities'
     ],
+    python_requires='>=3.5.3',
     zip_safe=True)
