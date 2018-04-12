@@ -6,46 +6,36 @@
 Welcome to Qualisys SDK for Python's documentation!
 ===================================================
 
-This document describes the Qualisys SDK for python. There are two parts:
+This document describes the Qualisys SDK for Python 2.0.
 
-   * `QTM RT Protocol`_
-   * `QTM REST`_
+**Version 2.0 introduces breaking changes**. The basic functionality is the same, but the package now 
+uses `asyncio <https://docs.python.org/3.5/library/asyncio.html>`_ instead of `twisted <https://twistedmatrix.com/>`_. 
+This reduces dependencies and simplifies installation but raises the required version of Python to 3.5.
+If you cannot use Python 3, stay on the earlier versions of this SDK.
 
+
+Example usage:
+--------------
+
+The following code demonstrates how to stream 3D markers from QTM. To keep the code short, it assumes that QTM is
+already streaming data, either live or RT from file.
+
+.. literalinclude:: ../examples/basic_example.py
 
 .. toctree::
    :maxdepth: 2
 
-.. module:: qtm
-
 QTM RT Protocol
 ---------------
 
-Implementation of the Qualisys RT protocol. For more information please see the RT document shipped with QTM.
+An instance of QRTConnection is returned when qtm.connect_ successfully connects to QTM.
 
-QRT
-~~~
+Functions marked as coroutines need to be run in a async function and awaited, please see example above.
 
-.. autoclass:: qtm.QRT
-    :members:
+.. autocofunction:: qtm.connect
 
 QRTConnection
 ~~~~~~~~~~~~~
-.. _deferred: https://twistedmatrix.com/documents/current/core/howto/defer.html
-
-All calls are asynchronous and return a deferred_.
-Most methods also take two callback, on_ok and on_error, each receives one parameter, the result/error.
-
-::
-
-   def success(result):
-      print(result)
-
-   def fail(error):
-      print(error)
-
-   connection.qtm_version(on_ok=success, on_error=fail)
-
-
 
 .. autoclass:: qtm.QRTConnection
     :members:
@@ -56,39 +46,28 @@ QRTPacket
 .. autoclass:: qtm.QRTPacket
     :members:
 
-QTM REST
---------
+QRTEvent
+~~~~~~~~~
 
-Implementation of the QTM REST interface. For more information see the REST document shipped with QTM.
-PAF endpoints are not yet implemented.
-
-QRest
-~~~~~
-
-All REST calls are asynchronous and return a deferred_.
-All methods also take two callback, on_ok and on_error, each receives one parameter, the result/error.
-
-::
-
-   def success(settings):
-      parse_settings(settings)
-
-   def fail(error):
-      print(error)
-
-   qtm_rest.get_settings(on_ok=success, on_error=fail)
-
-
-.. autoclass:: qtm.QRest
+.. autoclass:: qtm.QRTEvent
     :members:
+    :undoc-members:
 
-\* Experimental endpoints. Behaviour might change without notice.
+QRTComponentType
+~~~~~~~~~~~~~~~~
 
+.. autoclass:: qtm.packet.QRTComponentType
+    :members:
+    :undoc-members:    
+
+Exceptions
+~~~~~~~~~~
+
+.. autoclass:: qtm.QRTCommandException
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
 

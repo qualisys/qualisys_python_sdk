@@ -125,6 +125,9 @@ class QRTPacketType(Enum):
 
 
 class QRTComponentType(Enum):
+    '''
+        QTM Component types
+    '''
     Component3d = 1
     Component3dNoLabels = 2
     ComponentAnalog = 3
@@ -153,6 +156,9 @@ class QRTImageFormat(Enum):
 
 
 class QRTEvent(Enum):
+    '''
+        QTM Event types
+    '''
     EventConnected = 1
     EventConnectionClosed = 2
     EventCaptureStarted = 3

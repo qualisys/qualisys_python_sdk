@@ -1,6 +1,6 @@
 from .discovery import discover
 from .reboot import reboot
-from .qrt import connect
+from .qrt import connect, QRTConnection
 from .packet import QRTPacket, QRTEvent
 from .protocol import QRTCommandException
 from .rest import QRest

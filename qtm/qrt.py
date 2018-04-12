@@ -1,4 +1,8 @@
 import asyncio
+import logging
+from functools import wraps
+
+logger = logging.getLogger(__name__)  #pylint: disable C0103
 
 from qtm.packet import QRTPacketType
 from qtm.protocol import QTMProtocol, QRTCommandException
@@ -6,6 +10,7 @@ from qtm.protocol import QTMProtocol, QRTCommandException
 
 def validate_response(expected_responses):
     def internal_decorator(function):
+        @wraps(function)
         async def wrapper(*args, **kwargs):
 
             response = await function(*args, **kwargs)
@@ -27,23 +32,28 @@ async def connect(host,
                   version='1.18',
                   on_event=None,
                   on_disconnect=None,
-                  timeout=5):
-    """Connect to QTM
+                  timeout=5,
+                  loop=None):
+    """Async function to connect to QTM
 
     :param host: Address of the computer running QTM.
     :param port: Port number to connect to, should be the port configured for little endian.
-    :param version: What version of the protocol to use, tested for 1.14 and above but could
+    :param version: What version of the protocol to use, tested for 1.17 and above but could
         work with lower versions as well.
-    :param on_event: Called when there's an event from QTM.
+    :param on_disconnect: Function to be called when a disconnect from QTM occurs.
+    :param on_event: Function to be called when there's an event from QTM.
+    :param timeout: The default timeout time for calls to QTM.
+    :param loop: Alternative event loop, will use asyncio default if None.
 
+    :rtype: A :class:`.QRTConnection`
     """
-    loop = asyncio.get_event_loop()
+    loop = loop or asyncio.get_event_loop()
 
     try:
         _, protocol = await loop.create_connection(
             lambda: QTMProtocol(loop, on_event=on_event, on_disconnect=on_disconnect), host, port)
-    except ConnectionRefusedError as e:
-        print(e)
+    except (ConnectionRefusedError, TimeoutError, OSError) as exception:
+        logger.error(exception)
         return None
 
     try:
@@ -54,10 +64,21 @@ async def connect(host,
     return QRTConnection(protocol, timeout=timeout)
 
 
+def _validate_components(components):
+    for component in components:
+        if not component.lower() in [
+                "all", "2d", "2dlin", "3d", "3dres", "3dnolabels",
+                "3dnolabelsres", "force", "forcesingle", "6d", "6dres",
+                "6deuler", "6deulerres", "gazevector", "image", "timecode"
+        ]:
+            raise QRTCommandException(
+                "%s is not a valid component" % component)
+
+
 class QRTConnection(object):
     """Represent a connection to QTM.
 
-        Should not be instantiated, obtained from the :func:`~qtm.QRT.connect` on_connect callback.
+        Returned by :func:`~qtm.connect` when successfuly connected to QTM.
     """
 
     def __init__(self, protocol, timeout):
@@ -70,34 +91,59 @@ class QRTConnection(object):
         self._protocol.transport.close()
 
     async def qtm_version(self):
-        """Get QTM version."""
+        """Get the QTM version.
+        """
         return await asyncio.wait_for(
             self._protocol.send_command("qtmversion"), timeout=self._timeout)
 
     async def byte_order(self):
-        """Get the byte order used when communicating(should only ever be little endian)."""
+        """Get the byte order used when communicating
+            (should only ever be little endian using this library).
+        """
         return await asyncio.wait_for(
             self._protocol.send_command("byteorder"), timeout=self._timeout)
 
     async def get_state(self):
-        """Get the latest state of QTM, will be returned to the callback specified by the
-            :func:`~qtm.QRT.connect` on_event callback.
+        """Get the latest state change of QTM. If the :func:`~qtm.connect` on_event 
+        callback was set the callback will be called as well.
+
+        :rtype: A :class:`qtm.QRTEvent`
         """
-        self._protocol.send_command("getstate", callback=False)
+        await self._protocol.send_command("getstate", callback=False)
         return await self._protocol.await_event()
 
     async def await_event(self, event=None, timeout=30):
+        """Wait for an event from QTM.
+
+        :param event: A :class:`qtm.QRTEvent` 
+            to wait for a specific event. Otherwise wait for any event.
+
+        :param timeout: Max time to wait for event.
+
+        :rtype: A :class:`qtm.QRTEvent`
+        """
         return await self._protocol.await_event(event, timeout=timeout)
 
     async def get_parameters(self, parameters=None):
-        """Get the settings for the requested component(s) of QRM in XML format.
+        """Get the settings for the requested component(s) of QTM in XML format.
 
-        :param parameters: Parameters to request. Could be 'all' or any combination
+        :param parameters: A list of parameters to request. 
+            Could be 'all' or any combination
             of 'general', '3d', '6d', 'analog', 'force', 'gazevector', 'image'.
+        :rtype: An XML string containing the requested settings. 
+            See QTM RT Documentation for details.
         """
 
         if parameters is None:
             parameters = ['all']
+        else:
+            for parameter in parameters:
+                if not parameter in [
+                        "all", "general", "3d", "6d", "analog", "force",
+                        "gazevector", "image"
+                ]:
+                    raise QRTCommandException(
+                        "%s is not a valid parameter" % parameter)
 
         cmd = "getparameters %s" % " ".join(parameters)
         return await asyncio.wait_for(
@@ -106,12 +152,18 @@ class QRTConnection(object):
     async def get_current_frame(self, components=None):
         """Get measured values from QTM for a single frame.
 
-        :param components: See QTM RT protocol distributed with QTM for possible values.
-            Callback will receive a :class:`QRTPacket`
+        :param components: A list of components to receive, could be 'all' or any combination of
+                '2d', '2dlin', '3d', '3dres', '3dnolabels',
+                '3dnolabelsres', 'force', 'forcesingle', '6d', '6dres',
+                '6deuler', '6deulerres', 'gazevector', 'image', 'timecode'
+            
+        :rtype: A :class:`qtm.QRTPacket` containing requested components
         """
 
         if components is None:
             components = ['all']
+        else:
+            _validate_components(components)
 
         cmd = "getcurrentframe %s" % " ".join(components)
         return await asyncio.wait_for(
@@ -126,12 +178,18 @@ class QRTConnection(object):
 
         :param frames: Which frames to receive, possible values are 'allframes',
             'frequency:n' or 'frequencydivisor:n' where n should be desired value.
-        :param components: See QTM RT protocol distributed with QTM for possible values.
-            Callback will receive a :class:`QRTPacket`
+        :param components: A list of components to receive, could be 'all' or any combination of
+                '2d', '2dlin', '3d', '3dres', '3dnolabels',
+                '3dnolabelsres', 'force', 'forcesingle', '6d', '6dres',
+                '6deuler', '6deulerres', 'gazevector', 'image', 'timecode'
+
+        :rtype: The string 'Ok' if successful
         """
 
         if components is None:
             components = ['all']
+        else:
+            _validate_components(components)
 
         self._protocol.set_on_packet(on_packet)
 
@@ -145,11 +203,11 @@ class QRTConnection(object):
         self._protocol.set_on_packet(None)
 
         cmd = "streamframes stop"
-        self._protocol.send_command(cmd, callback=False)
+        await self._protocol.send_command(cmd, callback=False)
 
     @validate_response([b'You are now master'])
     async def take_control(self, password):
-        """Take control over QTM.
+        """Take control of QTM.
 
         :param password: Password as entered in QTM.
         """
@@ -159,7 +217,8 @@ class QRTConnection(object):
 
     @validate_response([b'You are now a regular client'])
     async def release_control(self):
-        """Release control over QTM."""
+        """Release control of QTM.
+        """
 
         cmd = "releasecontrol"
         return await asyncio.wait_for(
@@ -167,7 +226,8 @@ class QRTConnection(object):
 
     @validate_response([b'Creating new connection', b'Already connected'])
     async def new(self):
-        """Create a new measurement."""
+        """Create a new measurement.
+        """
         cmd = "new"
         return await asyncio.wait_for(
             self._protocol.send_command(cmd), timeout=self._timeout)
@@ -177,14 +237,16 @@ class QRTConnection(object):
         b'No connection to close'
     ])
     async def close(self):
-        """Close a measurement"""
+        """Close a measurement
+        """
         cmd = "close"
         return await asyncio.wait_for(
             self._protocol.send_command(cmd), timeout=self._timeout)
 
     @validate_response([b'Starting measurement', b'Starting RT from file'])
     async def start(self, rtfromfile=False):
-        """Start RT from file. You need to be in control of QTM to be able to do this."""
+        """Start RT from file. You need to be in control of QTM to be able to do this.
+        """
         cmd = "start" + (' rtfromfile' if rtfromfile else "")
         return await asyncio.wait_for(
             self._protocol.send_command(cmd), timeout=self._timeout)
@@ -221,7 +283,7 @@ class QRTConnection(object):
     async def load_project(self, project_path):
         """Load a project.
 
-        @param project_path: Path to project you want to load.
+        :param project_path: Path to project you want to load.
         """
         cmd = "loadproject %s" % project_path
         return await asyncio.wait_for(
@@ -244,7 +306,7 @@ class QRTConnection(object):
     async def send_xml(self, xml):
         """Used to update QTM settings, see QTM RT protocol for more information.
 
-        :param xml: XML document as a str.
+        :param xml: XML document as a str. See QTM RT Documentation for details.
         """
         return await asyncio.wait_for(
             self._protocol.send_command(

@@ -1,3 +1,7 @@
+'''
+    QTM RT Protocol implementation
+'''
+
 import asyncio
 import struct
 import collections
@@ -7,11 +11,16 @@ from qtm.packet import QRTPacketType
 from qtm.packet import QRTPacket, QRTEvent
 from qtm.packet import RTheader, RTEvent, RTCommand
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)  #pylint: disable C0103
 
 
 class QRTCommandException(Exception):
+    '''
+        Basic RT Command Exception
+    '''
+
     def __init__(self, value):
+        super(QRTCommandException, self).__init__()
         self.value = value
 
     def __str__(self):
@@ -19,6 +28,11 @@ class QRTCommandException(Exception):
 
 
 class QTMProtocol(asyncio.Protocol):
+    '''
+        QTM RT Protocol implementation
+        Should be constructed by ::qrt.connect
+    '''
+
     def __init__(self, loop, on_disconnect=None, on_event=None):
         self._received_data = b''
 
@@ -30,12 +44,22 @@ class QTMProtocol(asyncio.Protocol):
         self.event_future = None
         self._start_streaming = False
 
+        self.loop = loop
+        self.transport = None
+
         self._handlers = {
-            QRTPacketType.PacketError: self._on_error,
-            QRTPacketType.PacketData: self._on_data,
-            QRTPacketType.PacketCommand: self._on_command,
-            QRTPacketType.PacketEvent: self._on_event,
-            QRTPacketType.PacketXML: self._on_xml
+            QRTPacketType.PacketError:
+            self._on_error,
+            QRTPacketType.PacketData:
+            self._on_data,
+            QRTPacketType.PacketCommand:
+            self._on_command,
+            QRTPacketType.PacketEvent:
+            self._on_event,
+            QRTPacketType.PacketXML:
+            self._on_xml,
+            QRTPacketType.PacketNoMoreData:
+            lambda _: logger.debug(QRTPacketType.PacketNoMoreData)
         }
 
     async def set_version(self, version):
@@ -45,7 +69,7 @@ class QTMProtocol(asyncio.Protocol):
 
     async def _wait_loop(self, event):
         while True:
-            self.event_future = asyncio.get_event_loop().create_future()
+            self.event_future = self.event_future or self.loop.create_future()
             result = await self.event_future
 
             if event is None or event == result:
@@ -72,10 +96,11 @@ class QTMProtocol(asyncio.Protocol):
                             RTheader.size + cmd_length + 1, command_type.value,
                             command.encode(), b'\0'))
 
-            future = None
+            future = self.loop.create_future()
             if callback:
-                future = asyncio.get_event_loop().create_future()
                 self.request_queue.append(future)
+            else:
+                future.set_result(None)
             return future
 
         raise QRTCommandException("Not connected!")
@@ -165,7 +190,7 @@ class QTMProtocol(asyncio.Protocol):
         try:
             self._handlers[type_](data)
         except KeyError:
-            logger.error('Non handled packet type!')
+            logger.error('Non handled packet type! - %s', type_)
 
     def connection_lost(self, exc):
         self.transport = None
