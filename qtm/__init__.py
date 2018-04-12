@@ -3,7 +3,6 @@ from .reboot import reboot
 from .qrt import connect, QRTConnection
 from .packet import QRTPacket, QRTEvent
 from .protocol import QRTCommandException
-from .rest import QRest
 
 import logging
 import os
