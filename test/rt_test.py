@@ -12,6 +12,8 @@ from qtm.packet import QRTPacket, QRTComponentType, QRTEvent
 from qtm import QRT, QRTConnection, QRTCommandException
 
 
+MEASUREMENT = "e:/measurements/3d_analog_6dof_big27file.qtm"
+
 class TestConnection(unittest.TestCase):
 
     def setUp(self):
@@ -63,7 +65,7 @@ class TestPacket(unittest.TestCase):
         self.qrt.connect(on_connect=self.on_connect, on_disconnect=None, on_event=None)
         yield self.defered_connection
         yield self.connection.take_control('password')
-        yield self.connection.load("d:/measurements/3d_analog_6dof_big27file.qtm")
+        yield self.connection.load(MEASUREMENT)
         yield self.connection.start(rtfromfile=True)
 
     def tearDown(self):
@@ -171,7 +173,7 @@ class TestStream(unittest.TestCase):
         yield self.defered_connection
         yield self.defered_connection
         yield self.connection.take_control('password')
-        yield self.connection.load("d:/measurements/3d_analog_6dof_big27file.qtm")
+        yield self.connection.load(MEASUREMENT)
         yield self.connection.start(rtfromfile=True)
 
     def tearDown(self):
@@ -268,7 +270,7 @@ class TestCommands(unittest.TestCase):
     def test_multiple_commands(self):
         d = []
         d.append(self.connection.take_control("password"))
-        d.append(self.connection.load("d:\measurements\FirstMiqusMeasurement.qtm"))
+        d.append(self.connection.load(MEASUREMENT))
         d.append(self.connection.start(rtfromfile=True))
         d.append(self.connection.stop())
         d.append(self.connection.close())

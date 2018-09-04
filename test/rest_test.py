@@ -81,7 +81,7 @@ class TestSettings(unittest.TestCase):
 
     def test_get_experimental(self):
         d = self.rest.get_experimental()
-        d.addCallback(self.assertEqual, ['command', 'settings', 'workerstate'])
+        d.addCallback(self.assertEqual, ['command', 'measurements', 'settings', 'workerstate'])
         return d
 
     def test_get_workerstate(self):
