@@ -1,7 +1,7 @@
 Qualisys SDK for Python
 ================================
 
-The Qualisys SDK for Python implements our RealTime(RT) and REST SDKs and works with Python 2.7 and 3.
+The Qualisys SDK for Python implements our RealTime(RT) protocol and works with Python 3.5 and above.
 
 Installation
 ------------
@@ -19,15 +19,7 @@ It's also possible to install from github:
 python -m pip install git+https://github.com/qualisys/qualisys_python_sdk.git
 ```
 
-Or just clone the repo and copy the qtm folder into you project folder, 
-although this will require you to install the dependencies manually.
-
-Dependencies
-------------
-
-* twisted > 16.4.1 (Lower version will probably work fine, but not with python 3)
-* enum34 for Python versions lower than 3.4
-* pywin32 for windows (can be installed with pip as pypiwin32)
+Or just clone the repo and copy the qtm folder into you project folder,
 
 Documentation
 -------------
@@ -42,10 +34,10 @@ See the examples folder.
 Missing RT features and limitations
 -----------------------------------
 
-Implementation only uses little endian, should connect to standard port 22223.  
+Implementation only uses little endian, should connect to standard port 22223.
 Version should be at least 1.13.
 
-GetCaptureC3D is not implemented.  
+GetCaptureC3D is not implemented.
 GetCaptureQTM is not implemented.
 
 No support for selecting analog channel.
