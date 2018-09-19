@@ -11,3 +11,5 @@ _templates
 *.pyproj
 *.sublime-*
 /.vscode
+/.pytest_cache
+*/__pycache__
