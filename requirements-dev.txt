@@ -1,0 +1,8 @@
+black==18.6b4
+pylint==2.1.1
+pytest==3.8.0
+pytest-asyncio==0.9.0
+pytest-mock==1.10.0
+rope==0.11.0
+sphinx==1.8.0
+sphinxcontrib-asyncio==0.2.0
