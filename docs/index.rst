@@ -1,18 +1,28 @@
-.. Qualisys Realtime SDK for Python documentation master file, created by
-   sphinx-quickstart on Mon Oct  3 09:58:46 2016.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to Qualisys SDK for Python's documentation!
 ===================================================
 
 This document describes the Qualisys SDK for Python 2.0.
 
-**Version 2.0 introduces breaking changes**. The basic functionality is the same, but the package now 
-uses `asyncio <https://docs.python.org/3.5/library/asyncio.html>`_ instead of `twisted <https://twistedmatrix.com/>`_. 
-This reduces dependencies and simplifies installation but raises the required version of Python to 3.5.
-If you cannot use Python 3, stay on the earlier versions of this SDK.
+**NOTE:** Version 2.0 introduces breaking changes. :ref:`More info...<deprecated_version>`
 
+.. contents::
+    :depth: 2
+    :local:
+
+.. toctree::
+    :hidden:
+
+    deprecated.rst
+
+
+Installation:
+-------------
+
+This package is a pure python package and requires at least Python 3.5, the easiest way to install it is:
+
+.. code-block:: console
+
+    python -m pip install qtm
 
 Example usage:
 --------------
@@ -22,8 +32,6 @@ already streaming data, either live or RT from file.
 
 .. literalinclude:: ../examples/basic_example.py
 
-.. toctree::
-   :maxdepth: 2
 
 QTM RT Protocol
 ---------------
@@ -58,16 +66,10 @@ QRTComponentType
 
 .. autoclass:: qtm.packet.QRTComponentType
     :members:
-    :undoc-members:    
+    :undoc-members:
 
 Exceptions
 ~~~~~~~~~~
 
 .. autoclass:: qtm.QRTCommandException
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`search`
 
