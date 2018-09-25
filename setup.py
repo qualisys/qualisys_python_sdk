@@ -24,6 +24,6 @@ setup(
         "Topic :: Scientific/Engineering",
         "Topic :: Utilities",
     ],
-    python_requires=">=3.5.3",
+    python_requires=">=3.5.2",
     zip_safe=True,
 )
