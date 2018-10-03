@@ -20,12 +20,10 @@ def on_packet(packet):
 async def setup():
     """ Main function """
     connection = await qtm.connect("127.0.0.1")
-
     if connection is None:
         return
 
-    async with qtm.TakeControl(connection, "password"):
-        await connection.stream_frames(components=["3d"], on_packet=on_packet)
+    await connection.stream_frames(components=["3d"], on_packet=on_packet)
 
 
 if __name__ == "__main__":
