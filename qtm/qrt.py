@@ -4,7 +4,7 @@ import asyncio
 import logging
 from functools import wraps
 
-from qtm.packet import QRTPacketType
+from qtm.packet import QRTPacketType, QRTPacket
 from qtm.protocol import QTMProtocol, QRTCommandException
 
 # pylint: disable=C0330
@@ -32,76 +32,6 @@ def validate_response(expected_responses):
         return wrapper
 
     return internal_decorator
-
-
-async def connect(
-    host,
-    port=22223,
-    version="1.18",
-    on_event=None,
-    on_disconnect=None,
-    timeout=5,
-    loop=None,
-):
-    """Async function to connect to QTM
-
-    :param host: Address of the computer running QTM.
-    :param port: Port number to connect to, should be the port configured for little endian.
-    :param version: What version of the protocol to use, tested for 1.17 and above but could
-        work with lower versions as well.
-    :param on_disconnect: Function to be called when a disconnect from QTM occurs.
-    :param on_event: Function to be called when there's an event from QTM.
-    :param timeout: The default timeout time for calls to QTM.
-    :param loop: Alternative event loop, will use asyncio default if None.
-
-    :rtype: A :class:`.QRTConnection`
-    """
-    loop = loop or asyncio.get_event_loop()
-
-    try:
-        _, protocol = await loop.create_connection(
-            lambda: QTMProtocol(
-                loop=loop, on_event=on_event, on_disconnect=on_disconnect
-            ),
-            host,
-            port,
-        )
-    except (ConnectionRefusedError, TimeoutError, OSError) as exception:
-        LOG.error(exception)
-        return None
-
-    try:
-        await protocol.set_version(version)
-    except QRTCommandException as exception:
-        return None
-    except TypeError:  # TODO: fix test requiring this (test_connect_set_version)
-        return None
-
-    return QRTConnection(protocol, timeout=timeout)
-
-
-def _validate_components(components):
-    for component in components:
-        if not component.lower() in [
-            "all",
-            "2d",
-            "2dlin",
-            "3d",
-            "3dres",
-            "3dnolabels",
-            "3dnolabelsres",
-            "force",
-            "forcesingle",
-            "6d",
-            "6dres",
-            "6deuler",
-            "6deulerres",
-            "gazevector",
-            "image",
-            "timecode",
-        ]:
-            raise QRTCommandException("%s is not a valid component" % component)
-
 
 class QRTConnection(object):
     """Represent a connection to QTM.
@@ -189,7 +119,7 @@ class QRTConnection(object):
             self._protocol.send_command(cmd), timeout=self._timeout
         )
 
-    async def get_current_frame(self, components=None):
+    async def get_current_frame(self, components=None) -> QRTPacket:
         """Get measured values from QTM for a single frame.
 
         :param components: A list of components to receive, could be 'all' or any combination of
@@ -370,3 +300,74 @@ class QRTConnection(object):
 
         # TODO GetCaptureC3D
         # TODO GetCaptureQTM
+
+
+async def connect(
+    host,
+    port=22223,
+    version="1.18",
+    on_event=None,
+    on_disconnect=None,
+    timeout=5,
+    loop=None,
+) -> QRTConnection:
+    """Async function to connect to QTM
+
+    :param host: Address of the computer running QTM.
+    :param port: Port number to connect to, should be the port configured for little endian.
+    :param version: What version of the protocol to use, tested for 1.17 and above but could
+        work with lower versions as well.
+    :param on_disconnect: Function to be called when a disconnect from QTM occurs.
+    :param on_event: Function to be called when there's an event from QTM.
+    :param timeout: The default timeout time for calls to QTM.
+    :param loop: Alternative event loop, will use asyncio default if None.
+
+    :rtype: A :class:`.QRTConnection`
+    """
+    loop = loop or asyncio.get_event_loop()
+
+    try:
+        _, protocol = await loop.create_connection(
+            lambda: QTMProtocol(
+                loop=loop, on_event=on_event, on_disconnect=on_disconnect
+            ),
+            host,
+            port,
+        )
+    except (ConnectionRefusedError, TimeoutError, OSError) as exception:
+        LOG.error(exception)
+        return None
+
+    try:
+        await protocol.set_version(version)
+    except QRTCommandException as exception:
+        return None
+    except TypeError:  # TODO: fix test requiring this (test_connect_set_version)
+        return None
+
+    return QRTConnection(protocol, timeout=timeout)
+
+
+def _validate_components(components):
+    for component in components:
+        if not component.lower() in [
+            "all",
+            "2d",
+            "2dlin",
+            "3d",
+            "3dres",
+            "3dnolabels",
+            "3dnolabelsres",
+            "force",
+            "forcesingle",
+            "6d",
+            "6dres",
+            "6deuler",
+            "6deulerres",
+            "gazevector",
+            "image",
+            "timecode",
+        ]:
+            raise QRTCommandException("%s is not a valid component" % component)
+
+

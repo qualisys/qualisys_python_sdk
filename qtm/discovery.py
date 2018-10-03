@@ -18,49 +18,6 @@ QRTDiscoveryBasePort = struct.Struct(">H")
 
 QRTDiscoveryResponse = namedtuple("QRTDiscoveryResponse", "info host port")
 
-
-class Discover:
-    """async discovery of qtm instances"""
-
-    def __init__(self, ip_address):
-        self.ip_address = ip_address
-        self.queue = asyncio.Queue()
-        self.first = True
-
-    def __aiter__(self):
-        return self
-
-    async def __anext__(self):
-
-        loop = asyncio.get_event_loop()
-        if self.first:
-
-            protocol_factory = lambda: QRTDiscoveryProtocol(
-                receiver=self.queue.put_nowait
-            )
-
-            _, protocol = await loop.create_datagram_endpoint(
-                protocol_factory,
-                local_addr=(self.ip_address, 0),
-                allow_broadcast=True,
-                reuse_address=True,
-            )
-
-            LOG.debug("Sending discovery packet on %s", self.ip_address)
-            protocol.send_discovery_packet()
-            self.first = False
-
-        call_handle = loop.call_later(0.2, lambda: self.queue.put_nowait(None))
-        result = await self.queue.get()
-        if result is None:
-            LOG.debug("Discovery timed out")
-            raise StopAsyncIteration
-
-        LOG.debug(result)
-        call_handle.cancel()
-        return result
-
-
 class QRTDiscoveryProtocol:
     """ Oqus/Miqus discovery protocol implementation"""
 
@@ -97,3 +54,46 @@ class QRTDiscoveryProtocol:
             + QRTDiscoveryP2.pack(self.port),
             ("<broadcast>", 22226),
         )
+
+class Discover:
+    """async discovery of qtm instances"""
+
+    def __init__(self, ip_address):
+        self.ip_address = ip_address
+        self.queue = asyncio.Queue()
+        self.first = True
+
+    def __aiter__(self):
+        return self
+
+    async def __anext__(self) -> QRTDiscoveryResponse:
+
+        loop = asyncio.get_event_loop()
+        if self.first:
+
+            protocol_factory = lambda: QRTDiscoveryProtocol(
+                receiver=self.queue.put_nowait
+            )
+
+            _, protocol = await loop.create_datagram_endpoint(
+                protocol_factory,
+                local_addr=(self.ip_address, 0),
+                allow_broadcast=True,
+                reuse_address=True,
+            )
+
+            LOG.debug("Sending discovery packet on %s", self.ip_address)
+            protocol.send_discovery_packet()
+            self.first = False
+
+        call_handle = loop.call_later(0.2, lambda: self.queue.put_nowait(None))
+        result = await self.queue.get()
+        if result is None:
+            LOG.debug("Discovery timed out")
+            raise StopAsyncIteration
+
+        LOG.debug(result)
+        call_handle.cancel()
+        return result
+
+
