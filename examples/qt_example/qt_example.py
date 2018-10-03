@@ -3,7 +3,6 @@
     Requires PyQt5 and quamash
     Use pip to install requirements:
         pip install -r requirements.txt
-
 '''
 
 import sys
