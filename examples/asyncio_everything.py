@@ -156,7 +156,7 @@ def parse_args():
         "--ip",
         type=str,
         required=False,
-        default="localhost",
+        default="127.0.0.1",
         help="IP of interface to search for QTM instances",
     )
 
