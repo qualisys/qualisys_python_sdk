@@ -10,6 +10,7 @@ import logging
 from qtm.packet import QRTPacketType
 from qtm.packet import QRTPacket, QRTEvent
 from qtm.packet import RTheader, RTEvent, RTCommand
+from qtm.receiver import Receiver
 
 # pylint: disable=C0330
 
@@ -59,6 +60,8 @@ class QTMProtocol(asyncio.Protocol):
                 QRTPacketType.PacketNoMoreData
             ),
         }
+
+        self._receiver = Receiver(self._handlers)
 
     async def set_version(self, version):
         """ Set version of RT protocol used to communicate with QTM """
@@ -120,22 +123,7 @@ class QTMProtocol(asyncio.Protocol):
 
     def data_received(self, data):
         """ Received from QTM and route accordingly """
-        self._received_data += data
-        h_size = RTheader.size
-
-        data = self._received_data
-        size, type_ = RTheader.unpack_from(data, 0)
-
-        while len(data) >= size:
-            self._parse_received(data[h_size:size], type_)
-            data = data[size:]
-
-            if len(data) < h_size:
-                break
-
-            size, type_ = RTheader.unpack_from(data, 0)
-
-        self._received_data = data
+        self._receiver.data_received(data)
 
     def _deliver_promise(self, data):
         try:
@@ -144,9 +132,7 @@ class QTMProtocol(asyncio.Protocol):
         except IndexError:
             pass
 
-    def _on_data(self, data):
-        packet = QRTPacket(data)
-
+    def _on_data(self, packet):
         if self.on_packet is not None:
             if self._start_streaming:
                 self._deliver_promise(b"Ok")
@@ -157,9 +143,7 @@ class QTMProtocol(asyncio.Protocol):
             self._deliver_promise(packet)
         return
 
-    def _on_event(self, data):
-        event, = RTEvent.unpack(data)
-        event = QRTEvent(ord(event))
+    def _on_event(self, event):
         LOG.info(event)
 
         if self.event_future is not None:
@@ -169,8 +153,7 @@ class QTMProtocol(asyncio.Protocol):
         if self.on_event:
             self.on_event(event)
 
-    def _on_error(self, data):
-        response = data[:-1]
+    def _on_error(self, response):
         LOG.debug("Error: %s", response)
         if self._start_streaming:
             self.set_on_packet(None)
@@ -180,23 +163,14 @@ class QTMProtocol(asyncio.Protocol):
         except IndexError:
             raise QRTCommandException(response)
 
-    def _on_xml(self, data):
-        response = data[:-1]
-        LOG.debug("XML: %s ...", data[: min(len(response), 70)])
-        self._deliver_promise(data[:-1])
+    def _on_xml(self, response):
+        LOG.debug("XML: %s ...", response[: min(len(response), 70)])
+        self._deliver_promise(response)
 
-    def _on_command(self, data):
-        response = data[:-1]
+    def _on_command(self, response):
         LOG.debug("R: %s", response)
         if response != b"QTM RT Interface connected":
             self._deliver_promise(response)
-
-    def _parse_received(self, data, type_):
-        type_ = QRTPacketType(type_)
-        try:
-            self._handlers[type_](data)
-        except KeyError:
-            LOG.error("Non handled packet type! - %s", type_)
 
     def connection_lost(self, exc):
         self.transport = None
