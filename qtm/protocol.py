@@ -144,6 +144,7 @@ class QTMProtocol(asyncio.Protocol):
         return
 
     def _on_event(self, event):
+        event = QRTEvent(ord(event))
         LOG.info(event)
 
         if self.event_future is not None:
