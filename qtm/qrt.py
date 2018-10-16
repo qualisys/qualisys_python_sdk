@@ -33,6 +33,7 @@ def validate_response(expected_responses):
 
     return internal_decorator
 
+
 class QRTConnection(object):
     """Represent a connection to QTM.
 
@@ -111,6 +112,7 @@ class QRTConnection(object):
                     "force",
                     "gazevector",
                     "image",
+                    "skeleton",
                 ]:
                     raise QRTCommandException("%s is not a valid parameter" % parameter)
 
@@ -125,7 +127,7 @@ class QRTConnection(object):
         :param components: A list of components to receive, could be 'all' or any combination of
                 '2d', '2dlin', '3d', '3dres', '3dnolabels',
                 '3dnolabelsres', 'force', 'forcesingle', '6d', '6dres',
-                '6deuler', '6deulerres', 'gazevector', 'image', 'timecode'
+                '6deuler', '6deulerres', 'gazevector', 'image', 'timecode', 'skeleton'
 
         :rtype: A :class:`qtm.QRTPacket` containing requested components
         """
@@ -150,7 +152,7 @@ class QRTConnection(object):
         :param components: A list of components to receive, could be 'all' or any combination of
                 '2d', '2dlin', '3d', '3dres', '3dnolabels',
                 '3dnolabelsres', 'force', 'forcesingle', '6d', '6dres',
-                '6deuler', '6deulerres', 'gazevector', 'image', 'timecode'
+                '6deuler', '6deulerres', 'gazevector', 'image', 'timecode', 'skeleton'
 
         :rtype: The string 'Ok' if successful
         """
@@ -367,7 +369,7 @@ def _validate_components(components):
             "gazevector",
             "image",
             "timecode",
+            "skeleton",
         ]:
             raise QRTCommandException("%s is not a valid component" % component)
-
 
