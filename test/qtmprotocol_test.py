@@ -31,16 +31,10 @@ async def test_await_any_event_timeout(qtmprotocol: QTMProtocol):
         await awaitable
 
 
-def _create_event_data(event):
-    return RTEvent.pack(chr(event.value).encode())
-
-
 @pytest.mark.asyncio
 async def test_await_any_event(event_loop, qtmprotocol: QTMProtocol):
-    data = _create_event_data(QRTEvent.EventConnected)
-
     awaitable = qtmprotocol.await_event(timeout=1)
-    event_loop.call_later(0, lambda: qtmprotocol._on_event(data))
+    event_loop.call_later(0, lambda: qtmprotocol._on_event(QRTEvent.EventConnected))
     result = await awaitable
 
     assert result == QRTEvent.EventConnected
@@ -48,10 +42,8 @@ async def test_await_any_event(event_loop, qtmprotocol: QTMProtocol):
 
 @pytest.mark.asyncio
 async def test_await_specific_event(event_loop, qtmprotocol: QTMProtocol):
-    data = _create_event_data(QRTEvent.EventConnected)
-
     awaitable = qtmprotocol.await_event(event=QRTEvent.EventConnected, timeout=1)
-    event_loop.call_later(0, lambda: qtmprotocol._on_event(data))
+    event_loop.call_later(0, lambda: qtmprotocol._on_event(QRTEvent.EventConnected))
     result = await awaitable
 
     assert result == QRTEvent.EventConnected
@@ -59,13 +51,12 @@ async def test_await_specific_event(event_loop, qtmprotocol: QTMProtocol):
 
 @pytest.mark.asyncio
 async def test_await_event_multiple(event_loop, qtmprotocol: QTMProtocol):
-    data1 = _create_event_data(QRTEvent.EventConnectionClosed)
-    data2 = _create_event_data(QRTEvent.EventConnected)
-
     awaitable = qtmprotocol.await_event(event=QRTEvent.EventConnected, timeout=1)
 
-    event_loop.call_later(0, lambda: qtmprotocol._on_event(data1))
-    event_loop.call_later(0.1, lambda: qtmprotocol._on_event(data2))
+    event_loop.call_later(
+        0, lambda: qtmprotocol._on_event(QRTEvent.EventConnectionClosed)
+    )
+    event_loop.call_later(0.1, lambda: qtmprotocol._on_event(QRTEvent.EventConnected))
 
     result = await awaitable
 
