@@ -558,7 +558,7 @@ class QRTPacket(object):
                     RTJointRotation, data, component_position
                 )
 
-                joints.append((joint, position, rotation))
+                joints.append((joint.id, position, rotation))
             append_components(joints)
         return components
 
