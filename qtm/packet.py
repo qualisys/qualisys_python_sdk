@@ -535,7 +535,7 @@ class QRTPacket(object):
         )
 
     @ComponentGetter(QRTComponentType.ComponentSkeleton, RTSkeletonComponent)
-    def get_skeleton(self, component_info=None, data=None, component_position=None):
+    def get_skeletons(self, component_info=None, data=None, component_position=None):
         """Get skeletons
         """
 
