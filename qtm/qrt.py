@@ -346,8 +346,10 @@ async def connect(
     try:
         await protocol.set_version(version)
     except QRTCommandException as exception:
+        LOG.error(Exception)
         return None
-    except TypeError:  # TODO: fix test requiring this (test_connect_set_version)
+    except TypeError as exception:  # TODO: fix test requiring this (test_connect_set_version)
+        LOG.error(exception)
         return None
 
     return QRTConnection(protocol, timeout=timeout)
