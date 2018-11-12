@@ -109,17 +109,17 @@ RTImageComponent.format = struct.Struct("<i")
 RTSkeletonComponent = namedtuple("RTSkeletonComponent", "skeleton_count")
 RTSkeletonComponent.format = struct.Struct("<i")
 
-RTJointCount = namedtuple("RTJointCount", "joint_count")
-RTJointCount.format = struct.Struct("<i")
+RTSegmentCount = namedtuple("RTSegmentCount", "segment_count")
+RTSegmentCount.format = struct.Struct("<i")
 
-RTJointId = namedtuple("RTJointId", "id")
-RTJointId.format = struct.Struct("<i")
+RTSegmentId = namedtuple("RTSegmentId", "id")
+RTSegmentId.format = struct.Struct("<i")
 
-RTJointPosition = namedtuple("RTJointPosition", "x y z")
-RTJointPosition.format = struct.Struct("<3f")
+RTSegmentPosition = namedtuple("RTSegmentPosition", "x y z")
+RTSegmentPosition.format = struct.Struct("<3f")
 
-RTJointRotation = namedtuple("RTJointRotation", "x y z w")
-RTJointRotation.format = struct.Struct("<4f")
+RTSegmentRotation = namedtuple("RTSegmentRotation", "x y z w")
+RTSegmentRotation.format = struct.Struct("<4f")
 
 RTImage = namedtuple(
     "RTImage",
@@ -543,22 +543,22 @@ class QRTPacket(object):
         append_components = components.append
         for _ in range(component_info.skeleton_count):
             component_position, info = QRTPacket._get_exact(
-                RTJointCount, data, component_position
+                RTSegmentCount, data, component_position
             )
 
-            joints = []
-            for __ in range(info.joint_count):
-                component_position, joint = QRTPacket._get_exact(
-                    RTJointId, data, component_position
+            segments = []
+            for __ in range(info.segment_count):
+                component_position, segment = QRTPacket._get_exact(
+                    RTSegmentId, data, component_position
                 )
                 component_position, position = QRTPacket._get_exact(
-                    RTJointPosition, data, component_position
+                    RTSegmentPosition, data, component_position
                 )
                 component_position, rotation = QRTPacket._get_exact(
-                    RTJointRotation, data, component_position
+                    RTSegmentRotation, data, component_position
                 )
 
-                joints.append((joint.id, position, rotation))
-            append_components(joints)
+                segments.append((segment.id, position, rotation))
+            append_components(segments)
         return components
 
