@@ -1,6 +1,9 @@
 import asyncio
+import logging
 
 from .qrt import QRTConnection
+
+LOG = logging.getLogger("qtm")
 
 
 class TakeControl:
