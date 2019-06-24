@@ -127,6 +127,14 @@ RTImage = namedtuple(
 )
 RTImage.format = struct.Struct("<iiiiffffi")
 
+# Time
+
+RTTimeComponent = namedtuple("RTTimeComponent", "timecode_count")
+RTTimeComponent.format = struct.Struct("<i")
+
+RTTime = namedtuple("RTTime", "type hi lo")
+RTTime.format = struct.Struct("<iII")
+
 
 class QRTPacketType(Enum):
     """ Packet types """
@@ -311,6 +319,17 @@ class QRTPacket(object):
                 type_, data, component_position
             )
             append_components(position)
+
+        return components
+
+    @ComponentGetter(QRTComponentType.ComponentTimecode, RTTimeComponent)
+    def get_timecode(self, component_info=None, data=None, component_position=None):
+        components = []
+        append_components = components.append
+        for _ in range(component_info.timecode_count):
+            time_component, timecode = QRTPacket._get_exact(
+                RTTime, data, component_position)
+            append_components(timecode)
 
         return components
 
