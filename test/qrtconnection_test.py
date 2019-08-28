@@ -181,6 +181,8 @@ async def test_stream_frames_none(a_qrt):
         ["3DRes"],
         ["3DNoLabels"],
         ["3DNoLabelsRes"],
+        ["Analog"],
+        ["AnalogSingle"],
         ["Force"],
         ["ForceSingle"],
         ["6D"],
