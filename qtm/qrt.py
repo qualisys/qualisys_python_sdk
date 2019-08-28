@@ -365,6 +365,8 @@ def _validate_components(components):
             "3dres",
             "3dnolabels",
             "3dnolabelsres",
+            "analog",
+            "analogsingle",
             "force",
             "forcesingle",
             "6d",
