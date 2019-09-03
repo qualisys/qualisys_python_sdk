@@ -127,7 +127,7 @@ class QRTConnection(object):
 
         :param components: A list of components to receive, could be 'all' or any combination of
                 '2d', '2dlin', '3d', '3dres', '3dnolabels',
-                '3dnolabelsres', 'force', 'forcesingle', '6d', '6dres',
+                '3dnolabelsres', 'analog', 'analogsingle', 'force', 'forcesingle', '6d', '6dres',
                 '6deuler', '6deulerres', 'gazevector', 'image', 'timecode',
                 'skeleton', 'skeleton:global'
 
@@ -153,7 +153,7 @@ class QRTConnection(object):
             'frequency:n' or 'frequencydivisor:n' where n should be desired value.
         :param components: A list of components to receive, could be 'all' or any combination of
                 '2d', '2dlin', '3d', '3dres', '3dnolabels',
-                '3dnolabelsres', 'force', 'forcesingle', '6d', '6dres',
+                '3dnolabelsres', 'analog', 'analogsingle', 'force', 'forcesingle', '6d', '6dres',
                 '6deuler', '6deulerres', 'gazevector', 'image', 'timecode',
                 'skeleton', 'skeleton:global'
 
