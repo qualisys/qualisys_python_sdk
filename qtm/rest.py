@@ -4,15 +4,15 @@ class QRest(object):
     """QRest
 
         :param host: Address of the computer running QTM.
-        :param port: QTM REST port(always 7979)
+        :param port: QTM REST port(always 7979).
+        :param verbose: Set to True to print REST commands to stdout.
 
     """
 
-    def __init__(self, host, port=7979, persistent=True, verbose=False):
+    def __init__(self, host, port=7979, verbose=False):
         self.host = host
         self.port = port
         self.url = 'http://{host}:{port}'.format(host=host, port=port)
-        self.persistent = persistent
         self.verbose = verbose
     
     @rest_endpoint('GET', '/api/experimental/settings')
