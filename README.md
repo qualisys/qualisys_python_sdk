@@ -23,7 +23,7 @@ You can also clone the repo on your local machine and copy the *qtm* folder into
 
 ## Documentation
 
-Documentation is available at: https://qualisys.github.io/qualisys_python_sdk/index.html
+Documentation is available at: https://qualisys.github.io/qualisys_python_sdk/v103/index.html
 
 ## Examples
 
