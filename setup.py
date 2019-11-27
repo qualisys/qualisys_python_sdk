@@ -10,7 +10,7 @@ extras = {
         ":sys_platform=='win32'": ['pypiwin32']
         }
 
-version = '1.0.2'
+version = '1.0.3'
 
 setup(name='qtm',
       version=version,
