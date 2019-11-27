@@ -23,7 +23,10 @@ def filter_function(result, filter):
 
 
 @defer.inlineCallbacks
-def _get_page(self, method, url, data=None):
+def _get_page(self, method, url, data=None, verbose=False):
+    if verbose:
+        print("REST: " + method + " " + url + " " + str(data))
+
     try:
         response = yield getPage(url, method=method,
                                  headers={b'Content-Type': b'application/json'},
@@ -37,6 +40,9 @@ def _get_page(self, method, url, data=None):
         obj = json.loads(response.decode('utf-8'))
     except Exception as e:
         raise RestError(-1, response)
+
+    if verbose:
+        print("REST: Response  " + obj)
 
     defer.returnValue(obj)
 
@@ -58,7 +64,7 @@ def rest_endpoint(method, endpoint='/', filter=None):
 
             # try to get page
             d = _get_page(self, method.encode(), '{base}{endpoint}'.format(base=self.url, endpoint=endpoint).encode(),
-                          data=json.dumps(data).encode())
+                          data=json.dumps(data).encode(), verbose = self.verbose)
 
             if filter is not None:
                 d.addCallback(filter_function, filter)

@@ -8,12 +8,13 @@ class QRest(object):
 
     """
 
-    def __init__(self, host, port=7979, persistent=True):
+    def __init__(self, host, port=7979, persistent=True, verbose=False):
         self.host = host
         self.port = port
         self.url = 'http://{host}:{port}'.format(host=host, port=port)
         self.persistent = persistent
-
+        self.verbose = verbose
+    
     @rest_endpoint('GET', '/api/experimental/settings')
     def get_settings(self):
         """Get QTM Settings as json.
