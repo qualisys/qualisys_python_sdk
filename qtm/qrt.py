@@ -94,7 +94,8 @@ class QRTConnection(object):
 
         :param parameters: A list of parameters to request.
             Could be 'all' or any combination
-            of 'general', '3d', '6d', 'analog', 'force', 'gazevector', 'image'.
+            of 'general', '3d', '6d', 'analog', 'force', 'gazevector', 'image',
+            'skeleton', 'skeleton:global', 'calibration'.
         :rtype: An XML string containing the requested settings.
             See QTM RT Documentation for details.
         """
@@ -114,6 +115,7 @@ class QRTConnection(object):
                     "image",
                     "skeleton",
                     "skeleton:global",
+                    "calibration",
                 ]:
                     raise QRTCommandException("%s is not a valid parameter" % parameter)
 
@@ -125,7 +127,7 @@ class QRTConnection(object):
     async def get_current_frame(self, components=None) -> QRTPacket:
         """Get measured values from QTM for a single frame.
 
-        :param components: A list of components to receive, could be 'all' or any combination of
+        :param components: A list of components to receive, could be any combination of
                 '2d', '2dlin', '3d', '3dres', '3dnolabels',
                 '3dnolabelsres', 'analog', 'analogsingle', 'force', 'forcesingle', '6d', '6dres',
                 '6deuler', '6deulerres', 'gazevector', 'image', 'timecode',
@@ -134,10 +136,7 @@ class QRTConnection(object):
         :rtype: A :class:`qtm.QRTPacket` containing requested components
         """
 
-        if components is None:
-            components = ["all"]
-        else:
-            _validate_components(components)
+        _validate_components(components)
 
         cmd = "getcurrentframe %s" % " ".join(components)
         return await asyncio.wait_for(
@@ -151,7 +150,7 @@ class QRTConnection(object):
 
         :param frames: Which frames to receive, possible values are 'allframes',
             'frequency:n' or 'frequencydivisor:n' where n should be desired value.
-        :param components: A list of components to receive, could be 'all' or any combination of
+        :param components: A list of components to receive, could be any combination of
                 '2d', '2dlin', '3d', '3dres', '3dnolabels',
                 '3dnolabelsres', 'analog', 'analogsingle', 'force', 'forcesingle', '6d', '6dres',
                 '6deuler', '6deulerres', 'gazevector', 'image', 'timecode',
@@ -160,10 +159,7 @@ class QRTConnection(object):
         :rtype: The string 'Ok' if successful
         """
 
-        if components is None:
-            components = ["all"]
-        else:
-            _validate_components(components)
+        _validate_components(components)
 
         self._protocol.set_on_packet(on_packet)
 
@@ -303,14 +299,31 @@ class QRTConnection(object):
             timeout=self._timeout,
         )
 
-        # TODO GetCaptureC3D
-        # TODO GetCaptureQTM
+    async def calibrate(self, timeout=600):  # Timeout 10 min.
+        """Start calibration and return calibration result.
+
+        :param timeout_: Calibration timeout.
+
+        :rtype: An XML string containing the calibration result.
+            See QTM RT Documentation for details.
+        """
+        cmd = "calibrate"
+        response = await asyncio.wait_for(
+            self._protocol.send_command(cmd), timeout=self._timeout)
+        
+        return await asyncio.wait_for(
+            self._protocol.receive_response(), timeout=timeout)
+
+
+
+# TODO GetCaptureC3D
+# TODO GetCaptureQTM
 
 
 async def connect(
     host,
     port=22223,
-    version="1.19",
+    version="1.20",
     on_event=None,
     on_disconnect=None,
     timeout=5,
@@ -320,8 +333,8 @@ async def connect(
 
     :param host: Address of the computer running QTM.
     :param port: Port number to connect to, should be the port configured for little endian.
-    :param version: What version of the protocol to use, tested for 1.17 and above but could
-        work with lower versions as well.
+    :param version: Version of the rt protocol to use. Default is the latest version.
+        The Qualisys Python sdk does not support versions older than 1.8.
     :param on_disconnect: Function to be called when a disconnect from QTM occurs.
     :param on_event: Function to be called when there's an event from QTM.
     :param timeout: The default timeout time for calls to QTM.
@@ -358,7 +371,6 @@ async def connect(
 def _validate_components(components):
     for component in components:
         if not component.lower() in [
-            "all",
             "2d",
             "2dlin",
             "3d",

@@ -93,7 +93,7 @@ async def main(interface=None):
 
             await connection.start(rtfromfile=True)
 
-            (await connection.get_current_frame()).get_3d_markers()
+            (await connection.get_current_frame(components=["3d"])).get_3d_markers()
 
             queue = asyncio.Queue()
 

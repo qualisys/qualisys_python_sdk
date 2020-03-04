@@ -162,19 +162,9 @@ async def test_get_parameters(parameters, a_qrt):
     )
 
 
-@pytest.mark.asyncio
-async def test_stream_frames_none(a_qrt):
-    await a_qrt.stream_frames()
-
-    a_qrt._protocol.send_command.assert_called_once_with(
-        "streamframes {} {}".format("allframes", "all")
-    )
-
-
 @pytest.mark.parametrize(
     "components",
     [
-        ["All"],
         ["2D"],
         ["2DLin"],
         ["3D"],

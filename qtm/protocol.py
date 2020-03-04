@@ -112,6 +112,15 @@ class QTMProtocol(asyncio.Protocol):
 
         raise QRTCommandException("Not connected!")
 
+    def receive_response(self):
+        """ Sends commands to QTM """
+        if self.transport is not None:
+            future = self.loop.create_future()
+            self.request_queue.append(future)
+            return future
+
+        raise QRTCommandException("Not connected!")
+
     def connection_made(self, transport):
         LOG.info("Connected")
         self.transport = transport
