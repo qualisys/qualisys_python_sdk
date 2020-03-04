@@ -1,9 +1,9 @@
 Welcome to Qualisys SDK for Python's documentation!
 ===================================================
 
-This document describes the Qualisys SDK for Python 2.0.
+This document describes the Qualisys SDK for Python version 2.0.5.
 
-**NOTE:** Version 2.0 introduces breaking changes. :ref:`More info...<deprecated_version>`
+**NOTE:** Version 2.0.0 introduces breaking changes. :ref:`More info...<deprecated_version>`
 
 .. contents::
     :depth: 2
@@ -18,7 +18,7 @@ This document describes the Qualisys SDK for Python 2.0.
 Installation:
 -------------
 
-This package is a pure python package and requires at least Python 3.5, the easiest way to install it is:
+This package is a pure python package and requires at least Python 3.5.3, the easiest way to install it is:
 
 .. code-block:: console
 
