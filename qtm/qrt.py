@@ -310,6 +310,9 @@ class QRTConnection(object):
         cmd = "calibrate"
         response = await asyncio.wait_for(
             self._protocol.send_command(cmd), timeout=self._timeout)
+
+        if response != b"Starting calibration":
+            raise QRTCommandException(response) 
         
         return await asyncio.wait_for(
             self._protocol.receive_response(), timeout=timeout)
