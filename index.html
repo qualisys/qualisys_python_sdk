@@ -35,8 +35,8 @@
             
   <div class="section" id="welcome-to-qualisys-sdk-for-python-s-documentation">
 <h1>Welcome to Qualisys SDK for Python’s documentation!<a class="headerlink" href="#welcome-to-qualisys-sdk-for-python-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>This document describes the Qualisys SDK for Python 2.0.</p>
-<p><strong>NOTE:</strong> Version 2.0 introduces breaking changes. <a class="reference internal" href="deprecated.html#deprecated-version"><span class="std std-ref">More info…</span></a></p>
+<p>This document describes the Qualisys SDK for Python version 2.0.5.</p>
+<p><strong>NOTE:</strong> Version 2.0.0 introduces breaking changes. <a class="reference internal" href="deprecated.html#deprecated-version"><span class="std std-ref">More info…</span></a></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
 <li><a class="reference internal" href="#installation" id="id1">Installation:</a></li>
@@ -55,7 +55,7 @@
 </div>
 <div class="section" id="installation">
 <h2><a class="toc-backref" href="#id1">Installation:</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>This package is a pure python package and requires at least Python 3.5, the easiest way to install it is:</p>
+<p>This package is a pure python package and requires at least Python 3.5.3, the easiest way to install it is:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -m pip install qtm</span>
 </pre></div>
 </div>
@@ -86,12 +86,10 @@ already streaming data, either live or RT from file.</p>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">setup</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; Main function &quot;&quot;&quot;</span>
     <span class="n">connection</span> <span class="o">=</span> <span class="k">await</span> <span class="n">qtm</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">)</span>
-
     <span class="k">if</span> <span class="n">connection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span>
 
-    <span class="k">async</span> <span class="k">with</span> <span class="n">qtm</span><span class="o">.</span><span class="n">TakeControl</span><span class="p">(</span><span class="n">connection</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">):</span>
-        <span class="k">await</span> <span class="n">connection</span><span class="o">.</span><span class="n">stream_frames</span><span class="p">(</span><span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;3d&quot;</span><span class="p">],</span> <span class="n">on_packet</span><span class="o">=</span><span class="n">on_packet</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">connection</span><span class="o">.</span><span class="n">stream_frames</span><span class="p">(</span><span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;3d&quot;</span><span class="p">],</span> <span class="n">on_packet</span><span class="o">=</span><span class="n">on_packet</span><span class="p">)</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -106,7 +104,7 @@ already streaming data, either live or RT from file.</p>
 <p>Functions marked as coroutines need to be run in a async function and awaited, please see example above.</p>
 <dl class="function">
 <dt id="qtm.connect">
-<em class="property">coroutine </em><code class="descclassname">qtm.</code><code class="descname">connect</code><span class="sig-paren">(</span><em>host</em>, <em>port=22223</em>, <em>version='1.18'</em>, <em>on_event=None</em>, <em>on_disconnect=None</em>, <em>timeout=5</em>, <em>loop=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.connect" title="Permalink to this definition">¶</a></dt>
+<em class="property">coroutine </em><code class="descclassname">qtm.</code><code class="descname">connect</code><span class="sig-paren">(</span><em>host</em>, <em>port=22223</em>, <em>version='1.20'</em>, <em>on_event=None</em>, <em>on_disconnect=None</em>, <em>timeout=5</em>, <em>loop=None</em><span class="sig-paren">)</span> &#x2192; qtm.qrt.QRTConnection<a class="headerlink" href="#qtm.connect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Async function to connect to QTM</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -115,8 +113,8 @@ already streaming data, either live or RT from file.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>host</strong> – Address of the computer running QTM.</li>
 <li><strong>port</strong> – Port number to connect to, should be the port configured for little endian.</li>
-<li><strong>version</strong> – What version of the protocol to use, tested for 1.17 and above but could
-work with lower versions as well.</li>
+<li><strong>version</strong> – Version of the rt protocol to use. Default is the latest version.
+The Qualisys Python sdk does not support versions older than 1.8.</li>
 <li><strong>on_disconnect</strong> – Function to be called when a disconnect from QTM occurs.</li>
 <li><strong>on_event</strong> – Function to be called when there’s an event from QTM.</li>
 <li><strong>timeout</strong> – The default timeout time for calls to QTM.</li>
@@ -180,6 +178,23 @@ to wait for a specific event. Otherwise wait for any event.</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="qtm.QRTConnection.calibrate">
+<em class="property">coroutine </em><code class="descname">calibrate</code><span class="sig-paren">(</span><em>timeout=600</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.calibrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start calibration and return calibration result.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> – Calibration timeout.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">An XML string containing the calibration result.
+See QTM RT Documentation for details.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="qtm.QRTConnection.close">
 <em class="property">coroutine </em><code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close a measurement</p>
@@ -187,16 +202,17 @@ to wait for a specific event. Otherwise wait for any event.</li>
 
 <dl class="method">
 <dt id="qtm.QRTConnection.get_current_frame">
-<em class="property">coroutine </em><code class="descname">get_current_frame</code><span class="sig-paren">(</span><em>components=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.get_current_frame" title="Permalink to this definition">¶</a></dt>
+<em class="property">coroutine </em><code class="descname">get_current_frame</code><span class="sig-paren">(</span><em>components=None</em><span class="sig-paren">)</span> &#x2192; qtm.packet.QRTPacket<a class="headerlink" href="#qtm.QRTConnection.get_current_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get measured values from QTM for a single frame.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>components</strong> – A list of components to receive, could be ‘all’ or any combination of
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>components</strong> – A list of components to receive, could be any combination of
 ‘2d’, ‘2dlin’, ‘3d’, ‘3dres’, ‘3dnolabels’,
-‘3dnolabelsres’, ‘force’, ‘forcesingle’, ‘6d’, ‘6dres’,
-‘6deuler’, ‘6deulerres’, ‘gazevector’, ‘image’, ‘timecode’</td>
+‘3dnolabelsres’, ‘analog’, ‘analogsingle’, ‘force’, ‘forcesingle’, ‘6d’, ‘6dres’,
+‘6deuler’, ‘6deulerres’, ‘gazevector’, ‘image’, ‘timecode’,
+‘skeleton’, ‘skeleton:global’</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">A <a class="reference internal" href="#qtm.QRTPacket" title="qtm.QRTPacket"><code class="xref py py-class docutils literal notranslate"><span class="pre">qtm.QRTPacket</span></code></a> containing requested components</td>
 </tr>
@@ -214,7 +230,8 @@ to wait for a specific event. Otherwise wait for any event.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parameters</strong> – A list of parameters to request.
 Could be ‘all’ or any combination
-of ‘general’, ‘3d’, ‘6d’, ‘analog’, ‘force’, ‘gazevector’, ‘image’.</td>
+of ‘general’, ‘3d’, ‘6d’, ‘analog’, ‘force’, ‘gazevector’, ‘image’,
+‘skeleton’, ‘skeleton:global’, ‘calibration’.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">An XML string containing the requested settings.
 See QTM RT Documentation for details.</td>
@@ -348,10 +365,11 @@ callback was set the callback will be called as well.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>frames</strong> – Which frames to receive, possible values are ‘allframes’,
 ‘frequency:n’ or ‘frequencydivisor:n’ where n should be desired value.</li>
-<li><strong>components</strong> – A list of components to receive, could be ‘all’ or any combination of
+<li><strong>components</strong> – A list of components to receive, could be any combination of
 ‘2d’, ‘2dlin’, ‘3d’, ‘3dres’, ‘3dnolabels’,
-‘3dnolabelsres’, ‘force’, ‘forcesingle’, ‘6d’, ‘6dres’,
-‘6deuler’, ‘6deulerres’, ‘gazevector’, ‘image’, ‘timecode’</li>
+‘3dnolabelsres’, ‘analog’, ‘analogsingle’, ‘force’, ‘forcesingle’, ‘6d’, ‘6dres’,
+‘6deuler’, ‘6deulerres’, ‘gazevector’, ‘image’, ‘timecode’,
+‘skeleton’, ‘skeleton:global’</li>
 </ul>
 </td>
 </tr>
@@ -398,7 +416,7 @@ callback was set the callback will be called as well.</p>
 <em class="property">class </em><code class="descclassname">qtm.</code><code class="descname">QRTPacket</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket" title="Permalink to this definition">¶</a></dt>
 <dd><p>Packet containing data measured with QTM.</p>
 <p>Too check for existence of a specific component in a packet:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qtm.packet</span> <span class="k">import</span> <span class="n">QRTComponentType</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qtm.packet</span> <span class="kn">import</span> <span class="n">QRTComponentType</span>
 <span class="k">if</span> <span class="n">QRTComponentType</span><span class="o">.</span><span class="n">Component3d</span> <span class="ow">in</span> <span class="n">packet</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
     <span class="n">header</span><span class="p">,</span> <span class="n">markers</span> <span class="o">=</span> <span class="n">packet</span><span class="o">.</span><span class="n">get_3d_markers</span><span class="p">()</span>
 </pre></div>
@@ -510,6 +528,12 @@ first entry in the returned array.</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_skeletons">
+<code class="descname">get_skeletons</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_skeletons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get skeletons</p>
 </dd></dl>
 
 </dd></dl>
@@ -696,13 +720,13 @@ first entry in the returned array.</td>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="qtm.packet.QRTComponentType.ComponentNone">
-<code class="descname">ComponentNone</code><em class="property"> = 17</em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentNone" title="Permalink to this definition">¶</a></dt>
+<dt id="qtm.packet.QRTComponentType.ComponentTimecode">
+<code class="descname">ComponentTimecode</code><em class="property"> = 17</em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentTimecode" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="qtm.packet.QRTComponentType.ComponentTimecode">
-<code class="descname">ComponentTimecode</code><em class="property"> = 18</em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentTimecode" title="Permalink to this definition">¶</a></dt>
+<dt id="qtm.packet.QRTComponentType.ComponentSkeleton">
+<code class="descname">ComponentSkeleton</code><em class="property"> = 18</em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentSkeleton" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -761,16 +785,24 @@ first entry in the returned array.</td>
     </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2018, Qualisys.
+      &copy;2020, Qualisys.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/index.rst.txt"
