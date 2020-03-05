@@ -35,7 +35,7 @@ Missing RT features and limitations
 -----------------------------------
 
 Implementation only uses little endian, should connect to standard port 22223.
-Version should be at least 1.13.
+Protocol version must be 1.8 or later.
 
 GetCaptureC3D is not implemented.
 GetCaptureQTM is not implemented.

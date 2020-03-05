@@ -52,7 +52,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Qualisys Realtime SDK for Python'
-copyright = '2018, Qualisys'
+copyright = '2020, Qualisys'
 author = 'Qualisys'
 
 # The version info for the project you're documenting, acts as replacement for
