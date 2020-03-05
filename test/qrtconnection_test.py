@@ -285,6 +285,43 @@ async def test_new_fail(a_qrt):
 
 
 @pytest.mark.asyncio
+async def test_calibrate(a_qrt):
+    async def calibrate(*_):
+        return b"Starting calibration"
+
+    async def xml(*_):
+        return b"XML"
+
+    a_qrt._protocol.send_command.side_effect = calibrate
+    a_qrt._protocol.receive_response.side_effect = xml
+
+    response = await a_qrt.calibrate()
+
+    if response != b"XML":
+        pytest.fail("Calibration result error")
+
+    a_qrt._protocol.send_command.assert_called_once_with("calibrate")
+
+
+
+@pytest.mark.asyncio
+async def test_calibrate_fail(a_qrt):
+    async def calibrate(*_):
+        return b"Can not start calibration"
+
+    async def xml(*_):
+        return b"XML"
+
+    a_qrt._protocol.send_command.side_effect = calibrate
+    a_qrt._protocol.receive_response.side_effect = xml
+
+    with pytest.raises(QRTCommandException):
+        response = await a_qrt.calibrate()
+
+    a_qrt._protocol.send_command.assert_called_once_with("calibrate")
+
+
+@pytest.mark.asyncio
 async def test_close(a_qrt):
     async def close(*_):
         return b"Closing connection"
