@@ -94,7 +94,7 @@ class QRTConnection(object):
 
         :param parameters: A list of parameters to request.
             Could be 'all' or any combination
-            of 'general', '3d', '6d', 'analog', 'force', 'gazevector', 'image',
+            of 'general', '3d', '6d', 'analog', 'force', 'gazevector', 'eyetracker', 'image',
             'skeleton', 'skeleton:global', 'calibration'.
         :rtype: An XML string containing the requested settings.
             See QTM RT Documentation for details.
@@ -112,6 +112,7 @@ class QRTConnection(object):
                     "analog",
                     "force",
                     "gazevector",
+                    "eyetracker",
                     "image",
                     "skeleton",
                     "skeleton:global",
@@ -130,7 +131,7 @@ class QRTConnection(object):
         :param components: A list of components to receive, could be any combination of
                 '2d', '2dlin', '3d', '3dres', '3dnolabels',
                 '3dnolabelsres', 'analog', 'analogsingle', 'force', 'forcesingle', '6d', '6dres',
-                '6deuler', '6deulerres', 'gazevector', 'image', 'timecode',
+                '6deuler', '6deulerres', 'gazevector', 'eyetracker', 'image', 'timecode',
                 'skeleton', 'skeleton:global'
 
         :rtype: A :class:`qtm.QRTPacket` containing requested components
@@ -153,7 +154,7 @@ class QRTConnection(object):
         :param components: A list of components to receive, could be any combination of
                 '2d', '2dlin', '3d', '3dres', '3dnolabels',
                 '3dnolabelsres', 'analog', 'analogsingle', 'force', 'forcesingle', '6d', '6dres',
-                '6deuler', '6deulerres', 'gazevector', 'image', 'timecode',
+                '6deuler', '6deulerres', 'gazevector', 'eyetracker', 'image', 'timecode',
                 'skeleton', 'skeleton:global'
 
         :rtype: The string 'Ok' if successful
@@ -389,6 +390,7 @@ def _validate_components(components):
             "6deuler",
             "6deulerres",
             "gazevector",
+            "eyetracker",
             "image",
             "timecode",
             "skeleton",

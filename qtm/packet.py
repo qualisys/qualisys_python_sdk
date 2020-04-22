@@ -98,8 +98,24 @@ RTForce.format = struct.Struct("<9f")
 RTGazeVectorComponent = namedtuple("RTGazeVectorComponent", "vector_count")
 RTGazeVectorComponent.format = struct.Struct("<i")
 
-RTGazeVector = namedtuple("RTGazeVector", "sample_count")
-RTGazeVector.format = struct.Struct("<i")
+RTGazeVectorInfo = namedtuple("RTGazeVectorInfo", "sample_count sample_number")
+RTGazeVectorInfo.format = struct.Struct("<ii")
+
+RTGazeVectorUnitVector = namedtuple("RTGazeVectorUnitVector", "x y z")
+RTGazeVectorUnitVector.format = struct.Struct("<3f")
+
+RTGazeVectorPosition = namedtuple("RTGazeVectorPosition", "x y z")
+RTGazeVectorPosition.format = struct.Struct("<3f")
+
+# EyeTracker
+RTEyeTrackerComponent = namedtuple("RTEyeTrackerComponent", "eye_tracker_count")
+RTEyeTrackerComponent.format = struct.Struct("<i")
+
+RTEyeTrackerInfo = namedtuple("RTEyeTrackerInfo", "sample_count sample_number")
+RTEyeTrackerInfo.format = struct.Struct("<ii")
+
+RTEyeTrackerDiameter = namedtuple("RTEyeTrackerDiameter", "left right")
+RTEyeTrackerDiameter.format = struct.Struct("<ff")
 
 # Image
 RTImageComponent = namedtuple("RTImageComponent", "image_count")
@@ -172,6 +188,7 @@ class QRTComponentType(Enum):
     ComponentGazeVector = 16
     ComponentTimecode = 17
     ComponentSkeleton = 18
+    ComponentEyeTracker = 19
 
 
 class QRTImageFormat(Enum):
@@ -579,5 +596,54 @@ class QRTPacket(object):
 
                 segments.append((segment.id, position, rotation))
             append_components(segments)
+        return components
+
+    @ComponentGetter(QRTComponentType.ComponentGazeVector, RTGazeVectorComponent)
+    def get_gaze_vectors(self, component_info=None, data=None, component_position=None):
+        """Get gaze vectors
+        """
+        
+        components = []
+        append_components = components.append
+        for _ in range(component_info.vector_count):
+            component_position, info = QRTPacket._get_exact(
+                RTGazeVectorInfo, data, component_position)
+            
+            samples = []
+            if info.sample_count > 0:
+                for _ in range(info.sample_count):
+                    component_position, unit_vector = QRTPacket._get_exact(
+                        RTGazeVectorUnitVector, data, component_position)
+
+                    component_position, position = QRTPacket._get_exact(
+                        RTGazeVectorPosition, data, component_position)
+
+                    samples.append((unit_vector, position))
+
+            append_components((info, samples))
+
+        return components
+
+    @ComponentGetter(QRTComponentType.ComponentEyeTracker, RTEyeTrackerComponent)
+    def get_eye_trackers(self, component_info=None, data=None, component_position=None):
+        """Get eye trackers
+        """
+
+        components = []
+        append_components = components.append
+        for _ in range(component_info.eye_tracker_count):
+            component_position, info = QRTPacket._get_exact(
+                RTEyeTrackerInfo, data, component_position)
+            
+            samples = []
+            if info.sample_count > 0:
+                for _ in range(info.sample_count):
+                    component_position, diameter = QRTPacket._get_exact(
+                        RTEyeTrackerDiameter, data, component_position
+                    )
+                    samples.append(diameter)
+
+            append_components((info, samples))
+
         return components
 
