@@ -22,7 +22,7 @@ async def reboot(ip_address):
 
 
 class QRebootProtocol:
-    """ Oqus/Miqus discovery protocol implementation"""
+    """ Oqus/Miqus/Arqus discovery protocol implementation"""
 
     def __init__(self):
         self.transport = None

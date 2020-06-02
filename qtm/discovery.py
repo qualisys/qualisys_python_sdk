@@ -19,7 +19,7 @@ QRTDiscoveryBasePort = struct.Struct(">H")
 QRTDiscoveryResponse = namedtuple("QRTDiscoveryResponse", "info host port")
 
 class QRTDiscoveryProtocol:
-    """ Oqus/Miqus discovery protocol implementation"""
+    """ Oqus/Miqus/Arqus discovery protocol implementation"""
 
     def __init__(self, receiver=None):
         self.port = None
