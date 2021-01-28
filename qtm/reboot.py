@@ -14,7 +14,6 @@ async def reboot(ip_address):
         QRebootProtocol,
         local_addr=(ip_address, 0),
         allow_broadcast=True,
-        reuse_address=True,
     )
 
     LOG.info("Sending reboot on %s", ip_address)
