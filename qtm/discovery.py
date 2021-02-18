@@ -79,7 +79,6 @@ class Discover:
                 protocol_factory,
                 local_addr=(self.ip_address, 0),
                 allow_broadcast=True,
-                reuse_address=True,
             )
 
             LOG.debug("Sending discovery packet on %s", self.ip_address)
