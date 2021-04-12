@@ -506,7 +506,8 @@ class QRTPacket(object):
             component_position, image_info = QRTPacket._get_exact(
                 RTImage, data, component_position
             )
-            append_components((image_info, data[component_position:-1]))
+            append_components((image_info, data[component_position:component_position + image_info.image_size]))
+            component_position += image_info.image_size
         return components
 
     @ComponentGetter(QRTComponentType.Component3d, RT3DComponent)
