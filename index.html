@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Welcome to Qualisys SDK for Python’s documentation! &#8212; Qualisys Realtime SDK for Python 2.0 documentation</title>
+    <title>Welcome to Qualisys SDK for Python’s documentation! &#8212; Qualisys Realtime SDK for Python 2.1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
             
   <div class="section" id="welcome-to-qualisys-sdk-for-python-s-documentation">
 <h1>Welcome to Qualisys SDK for Python’s documentation!<a class="headerlink" href="#welcome-to-qualisys-sdk-for-python-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>This document describes the Qualisys SDK for Python version 2.0.5.</p>
+<p>This document describes the Qualisys SDK for Python version 2.1.0.</p>
 <p><strong>NOTE:</strong> Version 2.0.0 introduces breaking changes. <a class="reference internal" href="deprecated.html#deprecated-version"><span class="std std-ref">More info…</span></a></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
@@ -422,83 +422,6 @@ callback was set the callback will be called as well.</p>
 </pre></div>
 </div>
 <p>Component retriever functions will return None if a component is not in the packet.</p>
-<dl class="method">
-<dt id="qtm.QRTPacket.get_analog">
-<code class="descname">get_analog</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_analog" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get analog data.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="qtm.QRTPacket.get_analog_single">
-<code class="descname">get_analog_single</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_analog_single" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a single analog data channel.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="qtm.QRTPacket.get_force">
-<code class="descname">get_force</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_force" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get force data.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="qtm.QRTPacket.get_force_single">
-<code class="descname">get_force_single</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_force_single" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a single force data channel.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="qtm.QRTPacket.get_6d">
-<code class="descname">get_6d</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_6d" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get 6D data.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="qtm.QRTPacket.get_6d_residual">
-<code class="descname">get_6d_residual</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_6d_residual" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get 6D data with residual.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="qtm.QRTPacket.get_6d_euler">
-<code class="descname">get_6d_euler</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_6d_euler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get 6D data with euler rotations.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="qtm.QRTPacket.get_6d_euler_residual">
-<code class="descname">get_6d_euler_residual</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_6d_euler_residual" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get 6D data with residuals and euler rotations.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="qtm.QRTPacket.get_image">
-<code class="descname">get_image</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_image" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get image.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="qtm.QRTPacket.get_3d_markers">
-<code class="descname">get_3d_markers</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_3d_markers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get 3D markers.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="qtm.QRTPacket.get_3d_markers_residual">
-<code class="descname">get_3d_markers_residual</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_3d_markers_residual" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get 3D markers with residual.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="qtm.QRTPacket.get_3d_markers_no_label">
-<code class="descname">get_3d_markers_no_label</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_3d_markers_no_label" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get 3D markers without label.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="qtm.QRTPacket.get_3d_markers_no_label_residual">
-<code class="descname">get_3d_markers_no_label_residual</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_3d_markers_no_label_residual" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get 3D markers without label with residual.</p>
-</dd></dl>
 
 <dl class="method">
 <dt id="qtm.QRTPacket.get_2d_markers">
@@ -531,9 +454,99 @@ first entry in the returned array.</td>
 </dd></dl>
 
 <dl class="method">
+<dt id="qtm.QRTPacket.get_3d_markers">
+<code class="descname">get_3d_markers</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_3d_markers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get 3D markers.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_3d_markers_residual">
+<code class="descname">get_3d_markers_residual</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_3d_markers_residual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get 3D markers with residual.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_3d_markers_no_label">
+<code class="descname">get_3d_markers_no_label</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_3d_markers_no_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get 3D markers without label.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_3d_markers_no_label_residual">
+<code class="descname">get_3d_markers_no_label_residual</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_3d_markers_no_label_residual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get 3D markers without label with residual.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_6d">
+<code class="descname">get_6d</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_6d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get 6D data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_6d_residual">
+<code class="descname">get_6d_residual</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_6d_residual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get 6D data with residual.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_6d_euler">
+<code class="descname">get_6d_euler</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_6d_euler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get 6D data with euler rotations.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_6d_euler_residual">
+<code class="descname">get_6d_euler_residual</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_6d_euler_residual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get 6D data with residuals and euler rotations.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="qtm.QRTPacket.get_skeletons">
 <code class="descname">get_skeletons</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_skeletons" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get skeletons</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_analog">
+<code class="descname">get_analog</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_analog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get analog data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_analog_single">
+<code class="descname">get_analog_single</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_analog_single" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single analog data channel.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_force">
+<code class="descname">get_force</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get force data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_force_single">
+<code class="descname">get_force_single</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_force_single" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single force data channel.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_eye_trackers">
+<code class="descname">get_eye_trackers</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_eye_trackers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get eye tracker data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_gaze_vectors">
+<code class="descname">get_gaze_vectors</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_gaze_vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get gaze vector data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtm.QRTPacket.get_image">
+<code class="descname">get_image</code><span class="sig-paren">(</span><em>component_info=None</em>, <em>data=None</em>, <em>component_position=None</em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get image.</p>
 </dd></dl>
 
 </dd></dl>
@@ -729,6 +742,11 @@ first entry in the returned array.</td>
 <code class="descname">ComponentSkeleton</code><em class="property"> = 18</em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentSkeleton" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="qtm.packet.QRTComponentType.ComponentEyeTracker">
+<code class="descname">ComponentEyeTracker</code><em class="property"> = 19</em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentEyeTracker" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
@@ -798,7 +816,7 @@ first entry in the returned array.</td>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2020, Qualisys.
+      &copy;2021, Qualisys.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.0</a>
