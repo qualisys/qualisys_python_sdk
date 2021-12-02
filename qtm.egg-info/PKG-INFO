@@ -1,0 +1,21 @@
+Metadata-Version: 1.2
+Name: qtm
+Version: 2.1.0
+Summary: QTM Python SDK
+Home-page: https://github.com/qualisys/qualisys_python_sdk
+Author: Martin Gejke
+Author-email: support@qualisys.com
+License: MIT
+Download-URL: https://github.com/qualisys/qualisys_python_sdk/tarball/2.1.0
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Utilities
+Requires-Python: >=3.5.3
