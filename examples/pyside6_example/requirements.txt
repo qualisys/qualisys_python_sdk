@@ -1,0 +1,3 @@
+qtm
+PySide6
+qasync
