@@ -2,9 +2,9 @@
 
 Example of combining the qtm package with Qt
 Requires PySide6 and qasync
-
-![Screenshoot](https://user-images.githubusercontent.com/3189405/152881603-e39f6641-c7ae-4afd-a836-3dbbd54c3707.png)
-
+<p align="left">
+  <img width="500" src="https://user-images.githubusercontent.com/3189405/152881603-e39f6641-c7ae-4afd-a836-3dbbd54c3707.png">
+</p>
 
 ## Usage
 
