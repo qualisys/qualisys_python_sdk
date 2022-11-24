@@ -327,7 +327,7 @@ class QRTConnection(object):
 async def connect(
     host,
     port=22223,
-    version="1.23",
+    version="1.24",
     on_event=None,
     on_disconnect=None,
     timeout=5,
