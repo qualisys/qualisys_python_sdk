@@ -23,11 +23,7 @@ def create_body_index(xml_string):
 
 def body_enabled_count(xml_string):
     xml = ET.fromstring(xml_string)
-    enabled_count = 0
-    for index, enabled in enumerate(xml.findall("*/Body/Enabled")):
-        if enabled.text == "true":
-            enabled_count = enabled_count + 1
-    return enabled_count
+    return sum(enabled.text == "true" for enabled in xml.findall("*/Body/Enabled"))
 
 async def main():
 
