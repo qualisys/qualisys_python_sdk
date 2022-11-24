@@ -21,6 +21,13 @@ def create_body_index(xml_string):
 
     return body_to_index
 
+def body_enabled_count(xml_string):
+    xml = ET.fromstring(xml_string)
+    enabled_count = 0
+    for index, enabled in enumerate(xml.findall("*/Body/Enabled")):
+        if enabled.text == "true":
+            enabled_count = enabled_count + 1
+    return enabled_count
 
 async def main():
 
@@ -50,6 +57,8 @@ async def main():
     # Get 6dof settings from qtm
     xml_string = await connection.get_parameters(parameters=["6d"])
     body_index = create_body_index(xml_string)
+
+    print("{} of {} 6DoF bodies enabled".format(body_enabled_count(xml_string), len(body_index)))
 
     wanted_body = "L-frame"
 
