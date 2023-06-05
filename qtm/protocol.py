@@ -56,9 +56,7 @@ class QTMProtocol(asyncio.Protocol):
             QRTPacketType.PacketCommand: self._on_command,
             QRTPacketType.PacketEvent: self._on_event,
             QRTPacketType.PacketXML: self._on_xml,
-            QRTPacketType.PacketNoMoreData: lambda _: LOG.debug(
-                QRTPacketType.PacketNoMoreData
-            ),
+            QRTPacketType.PacketNoMoreData: self._on_no_more_data
         }
 
         self._receiver = Receiver(self._handlers)
@@ -151,7 +149,14 @@ class QTMProtocol(asyncio.Protocol):
         else:
             self._deliver_promise(packet)
         return
-
+    
+    def _on_no_more_data(self, packet):
+        if self.on_packet is not None:
+            if self._start_streaming:
+                self._deliver_promise(b"Ok")
+                self._start_streaming = False
+        return
+    
     def _on_event(self, event):
         LOG.info(event)
 
