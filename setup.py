@@ -1,11 +1,12 @@
 from setuptools import setup
 
-version = "2.1.1"
+version = "2.1.2"
 
 setup(
     name="qtm",
     version=version,
-    description="QTM Python SDK",
+    description="DEPRECATED",
+    long_description="Future versions of this package will go under the name \"qtm-rt\".",
     url="https://github.com/qualisys/qualisys_python_sdk",
     download_url="https://github.com/qualisys/qualisys_python_sdk/tarball/{}".format(
         version
