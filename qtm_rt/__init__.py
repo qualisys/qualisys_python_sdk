@@ -18,7 +18,7 @@ from .receiver import Receiver
 
 # pylint: disable=C0330
 
-LOG = logging.getLogger("qtm")
+LOG = logging.getLogger("qtm_rt")
 LOG_LEVEL = os.getenv("QTM_LOGGING", None)
 
 LEVEL = logging.DEBUG if LOG_LEVEL == "debug" else logging.INFO

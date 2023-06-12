@@ -1,10 +1,10 @@
 import logging
 
-from qtm.packet import QRTPacketType
-from qtm.packet import QRTPacket, QRTEvent
-from qtm.packet import RTheader, RTEvent, RTCommand
+from qtm_rt.packet import QRTPacketType
+from qtm_rt.packet import QRTPacket, QRTEvent
+from qtm_rt.packet import RTheader, RTEvent, RTCommand
 
-LOG = logging.getLogger("qtm")
+LOG = logging.getLogger("qtm_rt")
 
 
 class Receiver(object):

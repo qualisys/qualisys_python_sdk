@@ -3,7 +3,7 @@
 import asyncio
 import logging
 
-LOG = logging.getLogger("qtm")
+LOG = logging.getLogger("qtm_rt")
 
 DEFAULT_DISCOVERY_PORT = 9930
 

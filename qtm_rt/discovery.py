@@ -9,7 +9,7 @@ from .protocol import RTheader, QRTPacketType
 
 # pylint: disable=C0103
 
-LOG = logging.getLogger("qtm")
+LOG = logging.getLogger("qtm_rt")
 
 QRTDiscoveryP1 = struct.Struct("<II")
 QRTDiscoveryP2 = struct.Struct(">H")

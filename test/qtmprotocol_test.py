@@ -6,8 +6,8 @@ import asyncio
 
 import pytest
 
-from qtm.protocol import QTMProtocol, QRTCommandException
-from qtm.packet import QRTEvent, RTEvent
+from qtm_rt.protocol import QTMProtocol, QRTCommandException
+from qtm_rt.packet import QRTEvent, RTEvent
 
 # pylint: disable=W0621, C0111, W0212
 

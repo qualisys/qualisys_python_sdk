@@ -3,7 +3,7 @@ import logging
 
 from .qrt import QRTConnection
 
-LOG = logging.getLogger("qtm")
+LOG = logging.getLogger("qtm_rt")
 
 
 class TakeControl:

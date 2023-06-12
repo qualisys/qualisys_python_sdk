@@ -1,6 +1,6 @@
 /build
 /dist
-/qtm.egg-info
+/qtm_rt.egg-info
 /env
 /env3
 /.idea

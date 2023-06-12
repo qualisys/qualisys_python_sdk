@@ -6,9 +6,9 @@ import asyncio
 import xml.etree.ElementTree as ET
 import pkg_resources
 
-import qtm
+import qtm_rt
 
-QTM_FILE = pkg_resources.resource_filename("qtm", "data/Demo.qtm")
+QTM_FILE = pkg_resources.resource_filename("qtm_rt", "data/Demo.qtm")
 
 
 def create_body_index(xml_string):
@@ -28,7 +28,7 @@ def body_enabled_count(xml_string):
 async def main():
 
     # Connect to qtm
-    connection = await qtm.connect("127.0.0.1")
+    connection = await qtm_rt.connect("127.0.0.1")
 
     # Connection failed?
     if connection is None:
@@ -36,7 +36,7 @@ async def main():
         return
 
     # Take control of qtm, context manager will automatically release control after scope end
-    async with qtm.TakeControl(connection, "password"):
+    async with qtm_rt.TakeControl(connection, "password"):
 
         realtime = False
 

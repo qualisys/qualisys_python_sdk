@@ -17,8 +17,8 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtCore import pyqtSignal, QObject, pyqtProperty
 from PyQt5 import uic
 
-import qtm
-from qtm import QRTEvent
+import qtm_rt
+from qtm_rt import QRTEvent
 from quamash import QSelectorEventLoop
 
 main_window_class, _ = uic.loadUiType("./ui/main.ui")
@@ -67,7 +67,7 @@ class QDiscovery(QObject):
     async def _discover_qtm(self, interface):
 
         try:
-            async for qtm_instance in qtm.Discover(interface):
+            async for qtm_instance in qtm_rt.Discover(interface):
                 info = qtm_instance.info.decode("utf-8").split(",")[0]
 
                 if not info in self._found_qtms:
@@ -155,7 +155,7 @@ class MainUI(QMainWindow, main_window_class):
     async def _connect_qtm(self):
         ip = self.qtm_combo.currentText().split(" ")[1]
 
-        self._connection = await qtm.connect(
+        self._connection = await qtm_rt.connect(
             ip, on_disconnect=self.on_disconnect, on_event=self.on_event
         )
 
@@ -193,7 +193,7 @@ class MainUI(QMainWindow, main_window_class):
             control.setText("{0:.3f}".format(component))
 
     def on_packet(self, packet):
-        if qtm.packet.QRTComponentType.Component3d in packet.components:
+        if qtm_rt.packet.QRTComponentType.Component3d in packet.components:
             _, markers = packet.get_3d_markers()
             if self._trajectory_index is not None:
                 marker = markers[self._trajectory_index]
@@ -201,7 +201,7 @@ class MainUI(QMainWindow, main_window_class):
                     [self.x_trajectory, self.y_trajectory, self.z_trajectory], marker
                 )
 
-        if qtm.packet.QRTComponentType.Component6d in packet.components:
+        if qtm_rt.packet.QRTComponentType.Component6d in packet.components:
             _, sixdofs = packet.get_6d()
             if self._sixdof_index is not None:
                 position, _ = sixdofs[self._sixdof_index]

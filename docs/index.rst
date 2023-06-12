@@ -1,9 +1,9 @@
 Welcome to Qualisys SDK for Python's documentation!
 ===================================================
 
-This document describes the Qualisys SDK for Python version 2.1.2
+This document describes the Qualisys SDK for Python version 3.0.0
 
-**NOTE:** Version 2.0.0 introduces breaking changes. :ref:`More info...<deprecated_version>`
+**NOTE:** Major versions introduces breaking changes. :ref:`More info...<deprecated_version>`
 
 .. contents::
     :depth: 2
@@ -22,7 +22,7 @@ This package is a pure python package and requires at least Python 3.5.3, the ea
 
 .. code-block:: console
 
-    python -m pip install qtm
+    python -m pip install qtm-rt
 
 Example usage:
 --------------
@@ -36,40 +36,40 @@ already streaming data, either live or RT from file.
 QTM RT Protocol
 ---------------
 
-An instance of QRTConnection is returned when qtm.connect_ successfully connects to QTM.
+An instance of QRTConnection is returned when qtm_rt.connect_ successfully connects to QTM.
 
 Functions marked as coroutines need to be run in a async function and awaited, please see example above.
 
-.. autocofunction:: qtm.connect
+.. autocofunction:: qtm_rt.connect
 
 QRTConnection
 ~~~~~~~~~~~~~
 
-.. autoclass:: qtm.QRTConnection
+.. autoclass:: qtm_rt.QRTConnection
     :members:
 
 QRTPacket
 ~~~~~~~~~
 
-.. autoclass:: qtm.QRTPacket
+.. autoclass:: qtm_rt.QRTPacket
     :members:
 
 QRTEvent
 ~~~~~~~~~
 
-.. autoclass:: qtm.QRTEvent
+.. autoclass:: qtm_rt.QRTEvent
     :members:
     :undoc-members:
 
 QRTComponentType
 ~~~~~~~~~~~~~~~~
 
-.. autoclass:: qtm.packet.QRTComponentType
+.. autoclass:: qtm_rt.packet.QRTComponentType
     :members:
     :undoc-members:
 
 Exceptions
 ~~~~~~~~~~
 
-.. autoclass:: qtm.QRTCommandException
+.. autoclass:: qtm_rt.QRTCommandException
 

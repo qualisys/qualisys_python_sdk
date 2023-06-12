@@ -4,12 +4,12 @@ import asyncio
 import logging
 from functools import wraps
 
-from qtm.packet import QRTPacketType, QRTPacket
-from qtm.protocol import QTMProtocol, QRTCommandException
+from qtm_rt.packet import QRTPacketType, QRTPacket
+from qtm_rt.protocol import QTMProtocol, QRTCommandException
 
 # pylint: disable=C0330
 
-LOG = logging.getLogger("qtm")  # pylint: disable C0103
+LOG = logging.getLogger("qtm_rt")  # pylint: disable C0103
 
 
 def validate_response(expected_responses):
@@ -37,7 +37,7 @@ def validate_response(expected_responses):
 class QRTConnection(object):
     """Represent a connection to QTM.
 
-        Returned by :func:`~qtm.connect` when successfuly connected to QTM.
+        Returned by :func:`~qtm_rt.connect` when successfuly connected to QTM.
     """
 
     def __init__(self, protocol: QTMProtocol, timeout):
@@ -69,10 +69,10 @@ class QRTConnection(object):
         )
 
     async def get_state(self):
-        """Get the latest state change of QTM. If the :func:`~qtm.connect` on_event
+        """Get the latest state change of QTM. If the :func:`~qtm_rt.connect` on_event
         callback was set the callback will be called as well.
 
-        :rtype: A :class:`qtm.QRTEvent`
+        :rtype: A :class:`qtm_rt.QRTEvent`
         """
         await self._protocol.send_command("getstate", callback=False)
         return await self._protocol.await_event()
@@ -80,12 +80,12 @@ class QRTConnection(object):
     async def await_event(self, event=None, timeout=30):
         """Wait for an event from QTM.
 
-        :param event: A :class:`qtm.QRTEvent`
+        :param event: A :class:`qtm_rt.QRTEvent`
             to wait for a specific event. Otherwise wait for any event.
 
         :param timeout: Max time to wait for event.
 
-        :rtype: A :class:`qtm.QRTEvent`
+        :rtype: A :class:`qtm_rt.QRTEvent`
         """
         return await self._protocol.await_event(event, timeout=timeout)
 
@@ -134,7 +134,7 @@ class QRTConnection(object):
                 '6deuler', '6deulerres', 'gazevector', 'eyetracker', 'image', 'timecode',
                 'skeleton', 'skeleton:global'
 
-        :rtype: A :class:`qtm.QRTPacket` containing requested components
+        :rtype: A :class:`qtm_rt.QRTPacket` containing requested components
         """
 
         _validate_components(components)
@@ -145,7 +145,7 @@ class QRTConnection(object):
         )
 
     async def stream_frames(self, frames="allframes", components=None, on_packet=None):
-        """Stream measured frames from QTM until :func:`~qtm.QRTConnection.stream_frames_stop`
+        """Stream measured frames from QTM until :func:`~qtm_rt.QRTConnection.stream_frames_stop`
            is called.
 
 

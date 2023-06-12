@@ -1,12 +1,12 @@
 from setuptools import setup
 
-version = "2.1.2"
+version = "3.0.0"
 
 setup(
-    name="qtm",
+    name="qtm-rt",
     version=version,
-    description="DEPRECATED",
-    long_description="Future versions of this package will go under the name \"qtm-rt\".",
+    description="QTM Python SDK",
+    long_description="For older versions, see \"qtm\" package.",
     url="https://github.com/qualisys/qualisys_python_sdk",
     download_url="https://github.com/qualisys/qualisys_python_sdk/tarball/{}".format(
         version
@@ -14,8 +14,8 @@ setup(
     author="Martin Gejke",
     author_email="support@qualisys.com",
     license="MIT",
-    packages=["qtm"],
-    package_data={"qtm": ["data/demo.qtm"]},
+    packages=["qtm_rt"],
+    package_data={"qtm_rt": ["data/demo.qtm"]},
     classifiers=[
         "Operating System :: OS Independent",
         "Intended Audience :: Developers",

@@ -6,11 +6,11 @@ The Qualisys SDK for Python implements our RealTime(RT) protocol and works with 
 Installation
 ------------
 
-The easiest way to install the qtm package is by using [pip]((https://pip.pypa.io/en/stable/installing/)):
+The easiest way to install the qtm_rt package is by using [pip]((https://pip.pypa.io/en/stable/installing/)):
 
 ```
 python -m pip install pip --upgrade # Upgrade to latest pip
-python -m pip install qtm
+python -m pip install qtm-rt
 ```
 
 It's also possible to install from github:
@@ -19,7 +19,7 @@ It's also possible to install from github:
 python -m pip install git+https://github.com/qualisys/qualisys_python_sdk.git
 ```
 
-Or just clone the repo and copy the qtm folder into you project folder,
+Or just clone the repo and copy the qtm_rt folder into you project folder,
 
 Documentation
 -------------

@@ -267,7 +267,7 @@ class QRTPacket(object):
 
     ::
 
-        from qtm.packet import QRTComponentType
+        from qtm_rt.packet import QRTComponentType
         if QRTComponentType.Component3d in packet.components:
             header, markers = packet.get_3d_markers()
 

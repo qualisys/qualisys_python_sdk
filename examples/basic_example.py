@@ -5,7 +5,7 @@
 """
 
 import asyncio
-import qtm
+import qtm_rt
 
 
 def on_packet(packet):
@@ -19,7 +19,7 @@ def on_packet(packet):
 
 async def setup():
     """ Main function """
-    connection = await qtm.connect("127.0.0.1")
+    connection = await qtm_rt.connect("127.0.0.1")
     if connection is None:
         return
 

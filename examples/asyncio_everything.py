@@ -5,14 +5,14 @@ import asyncio
 import argparse
 import pkg_resources
 
-import qtm
+import qtm_rt
 
 
 logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger("example")
 
 
-QTM_FILE = pkg_resources.resource_filename("qtm", "data/Demo.qtm")
+QTM_FILE = pkg_resources.resource_filename("qtm_rt", "data/Demo.qtm")
 
 
 class AsyncEnumerate:
@@ -48,7 +48,7 @@ async def choose_qtm_instance(interface):
     """ List running QTM instances, asks for input and return chosen QTM """
     instances = {}
     print("Available QTM instances:")
-    async for i, qtm_instance in AsyncEnumerate(qtm.Discover(interface), start=1):
+    async for i, qtm_instance in AsyncEnumerate(qtm_rt.Discover(interface), start=1):
         instances[i] = qtm_instance
         print("{} - {}".format(i, qtm_instance.info))
 
@@ -75,7 +75,7 @@ async def main(interface=None):
 
     while True:
 
-        connection = await qtm.connect(qtm_ip, 22223, version="1.18")
+        connection = await qtm_rt.connect(qtm_ip, 22223, version="1.18")
 
         if connection is None:
             return
@@ -83,11 +83,11 @@ async def main(interface=None):
         await connection.get_state()
         await connection.byte_order()
 
-        async with qtm.TakeControl(connection, "password"):
+        async with qtm_rt.TakeControl(connection, "password"):
 
             result = await connection.close()
             if result == b"Closing connection":
-                await connection.await_event(qtm.QRTEvent.EventConnectionClosed)
+                await connection.await_event(qtm_rt.QRTEvent.EventConnectionClosed)
 
             await connection.load(QTM_FILE)
 
@@ -103,7 +103,7 @@ async def main(interface=None):
                 await connection.stream_frames(
                     components=["incorrect"], on_packet=queue.put_nowait
                 )
-            except qtm.QRTCommandException as exception:
+            except qtm_rt.QRTCommandException as exception:
                 LOG.info("exception %s", exception)
 
             await connection.stream_frames(
@@ -122,13 +122,13 @@ async def main(interface=None):
             await connection.await_event()
 
             await connection.new()
-            await connection.await_event(qtm.QRTEvent.EventConnected)
+            await connection.await_event(qtm_rt.QRTEvent.EventConnected)
 
             await connection.start()
-            await connection.await_event(qtm.QRTEvent.EventWaitingForTrigger)
+            await connection.await_event(qtm_rt.QRTEvent.EventWaitingForTrigger)
 
             await connection.trig()
-            await connection.await_event(qtm.QRTEvent.EventCaptureStarted)
+            await connection.await_event(qtm_rt.QRTEvent.EventCaptureStarted)
 
             await asyncio.sleep(0.5)
 
@@ -139,7 +139,7 @@ async def main(interface=None):
             await asyncio.sleep(0.5)
 
             await connection.stop()
-            await connection.await_event(qtm.QRTEvent.EventCaptureStopped)
+            await connection.await_event(qtm_rt.QRTEvent.EventCaptureStopped)
 
             await connection.save(r"measurement.qtm")
 

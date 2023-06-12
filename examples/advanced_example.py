@@ -3,7 +3,7 @@
 import asyncio
 import logging
 
-import qtm
+import qtm_rt
 
 LOG = logging.getLogger("example")
 
@@ -47,18 +47,18 @@ async def shutdown(delay, connection, receiver_future, queue):
 async def setup():
     """ main function """
 
-    connection = await qtm.connect("127.0.0.1")
+    connection = await qtm_rt.connect("127.0.0.1")
 
     if connection is None:
         return -1
 
-    async with qtm.TakeControl(connection, "password"):
+    async with qtm_rt.TakeControl(connection, "password"):
 
         state = await connection.get_state()
-        if state != qtm.QRTEvent.EventConnected:
+        if state != qtm_rt.QRTEvent.EventConnected:
             await connection.new()
             try:
-                await connection.await_event(qtm.QRTEvent.EventConnected, timeout=10)
+                await connection.await_event(qtm_rt.QRTEvent.EventConnected, timeout=10)
             except asyncio.TimeoutError:
                 LOG.error("Failed to start new measurement")
                 return -1
