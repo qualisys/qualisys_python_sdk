@@ -17,7 +17,7 @@
     <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Upgrade information" href="deprecated.html" />
+    <link rel="next" title="3.0.0" href="deprecated.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -36,8 +36,8 @@
             
   <section id="welcome-to-qualisys-sdk-for-python-s-documentation">
 <h1>Welcome to Qualisys SDK for Python’s documentation!<a class="headerlink" href="#welcome-to-qualisys-sdk-for-python-s-documentation" title="Permalink to this heading">¶</a></h1>
-<p>This document describes the Qualisys SDK for Python version 2.1.2</p>
-<p><strong>NOTE:</strong> Version 2.0.0 introduces breaking changes. <a class="reference internal" href="deprecated.html#deprecated-version"><span class="std std-ref">More info…</span></a></p>
+<p>This document describes the Qualisys SDK for Python version 3.0.0</p>
+<p><strong>NOTE:</strong> Major versions introduces breaking changes. <a class="reference internal" href="deprecated.html#deprecated-version"><span class="std std-ref">More info…</span></a></p>
 <nav class="contents local" id="contents">
 <ul class="simple">
 <li><p><a class="reference internal" href="#installation" id="id1">Installation:</a></p></li>
@@ -58,7 +58,7 @@
 <section id="installation">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Installation:</a><a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h2>
 <p>This package is a pure python package and requires at least Python 3.5.3, the easiest way to install it is:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -m pip install qtm</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -m pip install qtm-rt</span>
 </pre></div>
 </div>
 </section>
@@ -73,7 +73,7 @@ already streaming data, either live or RT from file.</p>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">qtm</span>
+<span class="kn">import</span> <span class="nn">qtm_rt</span>
 
 
 <span class="k">def</span> <span class="nf">on_packet</span><span class="p">(</span><span class="n">packet</span><span class="p">):</span>
@@ -87,7 +87,7 @@ already streaming data, either live or RT from file.</p>
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">setup</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Main function &quot;&quot;&quot;</span>
-    <span class="n">connection</span> <span class="o">=</span> <span class="k">await</span> <span class="n">qtm</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">)</span>
+    <span class="n">connection</span> <span class="o">=</span> <span class="k">await</span> <span class="n">qtm_rt</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">connection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span>
 
@@ -102,11 +102,11 @@ already streaming data, either live or RT from file.</p>
 </section>
 <section id="qtm-rt-protocol">
 <h2><a class="toc-backref" href="#id3" role="doc-backlink">QTM RT Protocol</a><a class="headerlink" href="#qtm-rt-protocol" title="Permalink to this heading">¶</a></h2>
-<p>An instance of QRTConnection is returned when <a href="#id9"><span class="problematic" id="id10">qtm.connect_</span></a> successfully connects to QTM.</p>
+<p>An instance of QRTConnection is returned when <a href="#id9"><span class="problematic" id="id10">qtm_rt.connect_</span></a> successfully connects to QTM.</p>
 <p>Functions marked as coroutines need to be run in a async function and awaited, please see example above.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="qtm.connect">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-prename descclassname"><span class="pre">qtm.</span></span><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">22223</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1.24'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_disconnect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#qtm.QRTConnection" title="qtm.qrt.QRTConnection"><span class="pre">QRTConnection</span></a></span></span><a class="headerlink" href="#qtm.connect" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.connect">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-prename descclassname"><span class="pre">qtm_rt.</span></span><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">22223</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1.24'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_disconnect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#qtm_rt.QRTConnection" title="qtm_rt.qrt.QRTConnection"><span class="pre">QRTConnection</span></a></span></span><a class="headerlink" href="#qtm_rt.connect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Async function to connect to QTM</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -122,7 +122,7 @@ The Qualisys Python sdk does not support versions older than 1.8.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>A <a class="reference internal" href="#qtm.QRTConnection" title="qtm.QRTConnection"><code class="xref py py-class docutils literal notranslate"><span class="pre">QRTConnection</span></code></a></p>
+<dd class="field-even"><p>A <a class="reference internal" href="#qtm_rt.QRTConnection" title="qtm_rt.QRTConnection"><code class="xref py py-class docutils literal notranslate"><span class="pre">QRTConnection</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -130,68 +130,68 @@ The Qualisys Python sdk does not support versions older than 1.8.</p></li>
 <section id="qrtconnection">
 <h3><a class="toc-backref" href="#id4" role="doc-backlink">QRTConnection</a><a class="headerlink" href="#qrtconnection" title="Permalink to this heading">¶</a></h3>
 <dl class="py class">
-<dt class="sig sig-object py" id="qtm.QRTConnection">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qtm.</span></span><span class="sig-name descname"><span class="pre">QRTConnection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QTMProtocol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qtm_rt.</span></span><span class="sig-name descname"><span class="pre">QRTConnection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QTMProtocol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represent a connection to QTM.</p>
-<p>Returned by <a class="reference internal" href="#qtm.connect" title="qtm.connect"><code class="xref py py-func docutils literal notranslate"><span class="pre">connect()</span></code></a> when successfuly connected to QTM.</p>
+<p>Returned by <a class="reference internal" href="#qtm_rt.connect" title="qtm_rt.connect"><code class="xref py py-func docutils literal notranslate"><span class="pre">connect()</span></code></a> when successfuly connected to QTM.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.disconnect">
-<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.disconnect" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.disconnect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disconnect from QTM.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.has_transport">
-<span class="sig-name descname"><span class="pre">has_transport</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.has_transport" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.has_transport">
+<span class="sig-name descname"><span class="pre">has_transport</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.has_transport" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if connected to QTM</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.qtm_version">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">qtm_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.qtm_version" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.qtm_version">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">qtm_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.qtm_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the QTM version.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.byte_order">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">byte_order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.byte_order" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.byte_order">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">byte_order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.byte_order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the byte order used when communicating
 (should only ever be little endian using this library).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.get_state">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.get_state" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the latest state change of QTM. If the <a class="reference internal" href="#qtm.connect" title="qtm.connect"><code class="xref py py-func docutils literal notranslate"><span class="pre">connect()</span></code></a> on_event
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.get_state">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.get_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the latest state change of QTM. If the <a class="reference internal" href="#qtm_rt.connect" title="qtm_rt.connect"><code class="xref py py-func docutils literal notranslate"><span class="pre">connect()</span></code></a> on_event
 callback was set the callback will be called as well.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A <a class="reference internal" href="#qtm.QRTEvent" title="qtm.QRTEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">qtm.QRTEvent</span></code></a></p>
+<dd class="field-odd"><p>A <a class="reference internal" href="#qtm_rt.QRTEvent" title="qtm_rt.QRTEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">qtm_rt.QRTEvent</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.await_event">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">await_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.await_event" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.await_event">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">await_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.await_event" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait for an event from QTM.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>event</strong> – A <a class="reference internal" href="#qtm.QRTEvent" title="qtm.QRTEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">qtm.QRTEvent</span></code></a>
+<li><p><strong>event</strong> – A <a class="reference internal" href="#qtm_rt.QRTEvent" title="qtm_rt.QRTEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">qtm_rt.QRTEvent</span></code></a>
 to wait for a specific event. Otherwise wait for any event.</p></li>
 <li><p><strong>timeout</strong> – Max time to wait for event.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>A <a class="reference internal" href="#qtm.QRTEvent" title="qtm.QRTEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">qtm.QRTEvent</span></code></a></p>
+<dd class="field-even"><p>A <a class="reference internal" href="#qtm_rt.QRTEvent" title="qtm_rt.QRTEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">qtm_rt.QRTEvent</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.get_parameters">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.get_parameters" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.get_parameters">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.get_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the settings for the requested component(s) of QTM in XML format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -208,8 +208,8 @@ See QTM RT Documentation for details.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.get_current_frame">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">get_current_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#qtm.QRTPacket" title="qtm.packet.QRTPacket"><span class="pre">QRTPacket</span></a></span></span><a class="headerlink" href="#qtm.QRTConnection.get_current_frame" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.get_current_frame">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">get_current_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#qtm_rt.QRTPacket" title="qtm_rt.packet.QRTPacket"><span class="pre">QRTPacket</span></a></span></span><a class="headerlink" href="#qtm_rt.QRTConnection.get_current_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get measured values from QTM for a single frame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -220,16 +220,16 @@ See QTM RT Documentation for details.</p>
 ‘skeleton’, ‘skeleton:global’</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>A <a class="reference internal" href="#qtm.QRTPacket" title="qtm.QRTPacket"><code class="xref py py-class docutils literal notranslate"><span class="pre">qtm.QRTPacket</span></code></a> containing requested components</p>
+<dd class="field-even"><p>A <a class="reference internal" href="#qtm_rt.QRTPacket" title="qtm_rt.QRTPacket"><code class="xref py py-class docutils literal notranslate"><span class="pre">qtm_rt.QRTPacket</span></code></a> containing requested components</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.stream_frames">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">stream_frames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'allframes'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_packet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.stream_frames" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.stream_frames">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">stream_frames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'allframes'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_packet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.stream_frames" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>Stream measured frames from QTM until <a class="reference internal" href="#qtm.QRTConnection.stream_frames_stop" title="qtm.QRTConnection.stream_frames_stop"><code class="xref py py-func docutils literal notranslate"><span class="pre">stream_frames_stop()</span></code></a></dt><dd><p>is called.</p>
+<dt>Stream measured frames from QTM until <a class="reference internal" href="#qtm_rt.QRTConnection.stream_frames_stop" title="qtm_rt.QRTConnection.stream_frames_stop"><code class="xref py py-func docutils literal notranslate"><span class="pre">stream_frames_stop()</span></code></a></dt><dd><p>is called.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
@@ -251,14 +251,14 @@ See QTM RT Documentation for details.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.stream_frames_stop">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">stream_frames_stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.stream_frames_stop" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.stream_frames_stop">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">stream_frames_stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.stream_frames_stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stop streaming frames.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.take_control">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">take_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.take_control" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.take_control">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">take_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.take_control" title="Permalink to this definition">¶</a></dt>
 <dd><p>Take control of QTM.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -268,38 +268,38 @@ See QTM RT Documentation for details.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.release_control">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">release_control</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.release_control" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.release_control">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">release_control</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.release_control" title="Permalink to this definition">¶</a></dt>
 <dd><p>Release control of QTM.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.new">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">new</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.new" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.new">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">new</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.new" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new measurement.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.close">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.close">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close a measurement</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.start">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rtfromfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.start" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.start">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rtfromfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start RT from file. You need to be in control of QTM to be able to do this.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.stop">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.stop" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.stop">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stop RT from file.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.load">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.load" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.load">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a measurement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -309,8 +309,8 @@ See QTM RT Documentation for details.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.save">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.save" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.save">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a measurement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -323,8 +323,8 @@ See QTM RT Documentation for details.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.load_project">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">load_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.load_project" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.load_project">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">load_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.load_project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a project.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -334,20 +334,20 @@ See QTM RT Documentation for details.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.trig">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">trig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.trig" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.trig">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">trig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.trig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trigger QTM, only possible when QTM is configured to use Software/Wireless trigger</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.set_qtm_event">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">set_qtm_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.set_qtm_event" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.set_qtm_event">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">set_qtm_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.set_qtm_event" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set event in QTM.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.send_xml">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">send_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.send_xml" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.send_xml">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">send_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.send_xml" title="Permalink to this definition">¶</a></dt>
 <dd><p>Used to update QTM settings, see QTM RT protocol for more information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -357,8 +357,8 @@ See QTM RT Documentation for details.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTConnection.calibrate">
-<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">calibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTConnection.calibrate" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTConnection.calibrate">
+<em class="property"><span class="pre">coroutine</span> </em><span class="sig-name descname"><span class="pre">calibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTConnection.calibrate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start calibration and return calibration result.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -377,97 +377,97 @@ See QTM RT Documentation for details.</p>
 <section id="qrtpacket">
 <h3><a class="toc-backref" href="#id5" role="doc-backlink">QRTPacket</a><a class="headerlink" href="#qrtpacket" title="Permalink to this heading">¶</a></h3>
 <dl class="py class">
-<dt class="sig sig-object py" id="qtm.QRTPacket">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qtm.</span></span><span class="sig-name descname"><span class="pre">QRTPacket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qtm_rt.</span></span><span class="sig-name descname"><span class="pre">QRTPacket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket" title="Permalink to this definition">¶</a></dt>
 <dd><p>Packet containing data measured with QTM.</p>
 <p>Too check for existence of a specific component in a packet:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qtm.packet</span> <span class="kn">import</span> <span class="n">QRTComponentType</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qtm_rt.packet</span> <span class="kn">import</span> <span class="n">QRTComponentType</span>
 <span class="k">if</span> <span class="n">QRTComponentType</span><span class="o">.</span><span class="n">Component3d</span> <span class="ow">in</span> <span class="n">packet</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
     <span class="n">header</span><span class="p">,</span> <span class="n">markers</span> <span class="o">=</span> <span class="n">packet</span><span class="o">.</span><span class="n">get_3d_markers</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Component retriever functions will return None if a component is not in the packet.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_analog">
-<span class="sig-name descname"><span class="pre">get_analog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_analog" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_analog">
+<span class="sig-name descname"><span class="pre">get_analog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_analog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get analog data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_analog_single">
-<span class="sig-name descname"><span class="pre">get_analog_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_analog_single" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_analog_single">
+<span class="sig-name descname"><span class="pre">get_analog_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_analog_single" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a single analog data channel.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_force">
-<span class="sig-name descname"><span class="pre">get_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_force" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_force">
+<span class="sig-name descname"><span class="pre">get_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_force" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get force data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_force_single">
-<span class="sig-name descname"><span class="pre">get_force_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_force_single" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_force_single">
+<span class="sig-name descname"><span class="pre">get_force_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_force_single" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a single force data channel.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_6d">
-<span class="sig-name descname"><span class="pre">get_6d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_6d" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_6d">
+<span class="sig-name descname"><span class="pre">get_6d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_6d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get 6D data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_6d_residual">
-<span class="sig-name descname"><span class="pre">get_6d_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_6d_residual" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_6d_residual">
+<span class="sig-name descname"><span class="pre">get_6d_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_6d_residual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get 6D data with residual.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_6d_euler">
-<span class="sig-name descname"><span class="pre">get_6d_euler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_6d_euler" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_6d_euler">
+<span class="sig-name descname"><span class="pre">get_6d_euler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_6d_euler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get 6D data with euler rotations.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_6d_euler_residual">
-<span class="sig-name descname"><span class="pre">get_6d_euler_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_6d_euler_residual" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_6d_euler_residual">
+<span class="sig-name descname"><span class="pre">get_6d_euler_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_6d_euler_residual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get 6D data with residuals and euler rotations.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_image">
-<span class="sig-name descname"><span class="pre">get_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_image" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_image">
+<span class="sig-name descname"><span class="pre">get_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get image.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_3d_markers">
-<span class="sig-name descname"><span class="pre">get_3d_markers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_3d_markers" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_3d_markers">
+<span class="sig-name descname"><span class="pre">get_3d_markers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_3d_markers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get 3D markers.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_3d_markers_residual">
-<span class="sig-name descname"><span class="pre">get_3d_markers_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_3d_markers_residual" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_3d_markers_residual">
+<span class="sig-name descname"><span class="pre">get_3d_markers_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_3d_markers_residual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get 3D markers with residual.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_3d_markers_no_label">
-<span class="sig-name descname"><span class="pre">get_3d_markers_no_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_3d_markers_no_label" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_3d_markers_no_label">
+<span class="sig-name descname"><span class="pre">get_3d_markers_no_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_3d_markers_no_label" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get 3D markers without label.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_3d_markers_no_label_residual">
-<span class="sig-name descname"><span class="pre">get_3d_markers_no_label_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_3d_markers_no_label_residual" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_3d_markers_no_label_residual">
+<span class="sig-name descname"><span class="pre">get_3d_markers_no_label_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_3d_markers_no_label_residual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get 3D markers without label with residual.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_2d_markers">
-<span class="sig-name descname"><span class="pre">get_2d_markers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_2d_markers" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_2d_markers">
+<span class="sig-name descname"><span class="pre">get_2d_markers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_2d_markers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get 2D markers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -478,8 +478,8 @@ first entry in the returned array.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_2d_markers_linearized">
-<span class="sig-name descname"><span class="pre">get_2d_markers_linearized</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_2d_markers_linearized" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_2d_markers_linearized">
+<span class="sig-name descname"><span class="pre">get_2d_markers_linearized</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_2d_markers_linearized" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get 2D linearized markers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -490,20 +490,20 @@ first entry in the returned array.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_skeletons">
-<span class="sig-name descname"><span class="pre">get_skeletons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_skeletons" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_skeletons">
+<span class="sig-name descname"><span class="pre">get_skeletons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_skeletons" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get skeletons</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_gaze_vectors">
-<span class="sig-name descname"><span class="pre">get_gaze_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_gaze_vectors" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_gaze_vectors">
+<span class="sig-name descname"><span class="pre">get_gaze_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_gaze_vectors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get gaze vectors</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="qtm.QRTPacket.get_eye_trackers">
-<span class="sig-name descname"><span class="pre">get_eye_trackers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTPacket.get_eye_trackers" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTPacket.get_eye_trackers">
+<span class="sig-name descname"><span class="pre">get_eye_trackers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTPacket.get_eye_trackers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get eye trackers</p>
 </dd></dl>
 
@@ -513,92 +513,92 @@ first entry in the returned array.</p>
 <section id="qrtevent">
 <h3><a class="toc-backref" href="#id6" role="doc-backlink">QRTEvent</a><a class="headerlink" href="#qrtevent" title="Permalink to this heading">¶</a></h3>
 <dl class="py class">
-<dt class="sig sig-object py" id="qtm.QRTEvent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qtm.</span></span><span class="sig-name descname"><span class="pre">QRTEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTEvent" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qtm_rt.</span></span><span class="sig-name descname"><span class="pre">QRTEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>QTM Event types</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventConnected">
-<span class="sig-name descname"><span class="pre">EventConnected</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#qtm.QRTEvent.EventConnected" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventConnected">
+<span class="sig-name descname"><span class="pre">EventConnected</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventConnected" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventConnectionClosed">
-<span class="sig-name descname"><span class="pre">EventConnectionClosed</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#qtm.QRTEvent.EventConnectionClosed" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventConnectionClosed">
+<span class="sig-name descname"><span class="pre">EventConnectionClosed</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventConnectionClosed" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventCaptureStarted">
-<span class="sig-name descname"><span class="pre">EventCaptureStarted</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#qtm.QRTEvent.EventCaptureStarted" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventCaptureStarted">
+<span class="sig-name descname"><span class="pre">EventCaptureStarted</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventCaptureStarted" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventCaptureStopped">
-<span class="sig-name descname"><span class="pre">EventCaptureStopped</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#qtm.QRTEvent.EventCaptureStopped" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventCaptureStopped">
+<span class="sig-name descname"><span class="pre">EventCaptureStopped</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventCaptureStopped" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventCaptureFetchingFinished">
-<span class="sig-name descname"><span class="pre">EventCaptureFetchingFinished</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#qtm.QRTEvent.EventCaptureFetchingFinished" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventCaptureFetchingFinished">
+<span class="sig-name descname"><span class="pre">EventCaptureFetchingFinished</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventCaptureFetchingFinished" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventCalibrationStarted">
-<span class="sig-name descname"><span class="pre">EventCalibrationStarted</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#qtm.QRTEvent.EventCalibrationStarted" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventCalibrationStarted">
+<span class="sig-name descname"><span class="pre">EventCalibrationStarted</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventCalibrationStarted" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventCalibrationStopped">
-<span class="sig-name descname"><span class="pre">EventCalibrationStopped</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#qtm.QRTEvent.EventCalibrationStopped" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventCalibrationStopped">
+<span class="sig-name descname"><span class="pre">EventCalibrationStopped</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventCalibrationStopped" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventRTfromFileStarted">
-<span class="sig-name descname"><span class="pre">EventRTfromFileStarted</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#qtm.QRTEvent.EventRTfromFileStarted" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventRTfromFileStarted">
+<span class="sig-name descname"><span class="pre">EventRTfromFileStarted</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventRTfromFileStarted" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventRTfromFileStopped">
-<span class="sig-name descname"><span class="pre">EventRTfromFileStopped</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9</span></em><a class="headerlink" href="#qtm.QRTEvent.EventRTfromFileStopped" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventRTfromFileStopped">
+<span class="sig-name descname"><span class="pre">EventRTfromFileStopped</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventRTfromFileStopped" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventWaitingForTrigger">
-<span class="sig-name descname"><span class="pre">EventWaitingForTrigger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#qtm.QRTEvent.EventWaitingForTrigger" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventWaitingForTrigger">
+<span class="sig-name descname"><span class="pre">EventWaitingForTrigger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventWaitingForTrigger" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventCameraSettingsChanged">
-<span class="sig-name descname"><span class="pre">EventCameraSettingsChanged</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">11</span></em><a class="headerlink" href="#qtm.QRTEvent.EventCameraSettingsChanged" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventCameraSettingsChanged">
+<span class="sig-name descname"><span class="pre">EventCameraSettingsChanged</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">11</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventCameraSettingsChanged" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventQTMShuttingDown">
-<span class="sig-name descname"><span class="pre">EventQTMShuttingDown</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12</span></em><a class="headerlink" href="#qtm.QRTEvent.EventQTMShuttingDown" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventQTMShuttingDown">
+<span class="sig-name descname"><span class="pre">EventQTMShuttingDown</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventQTMShuttingDown" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventCaptureSaved">
-<span class="sig-name descname"><span class="pre">EventCaptureSaved</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">13</span></em><a class="headerlink" href="#qtm.QRTEvent.EventCaptureSaved" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventCaptureSaved">
+<span class="sig-name descname"><span class="pre">EventCaptureSaved</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">13</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventCaptureSaved" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventReprocessingStarted">
-<span class="sig-name descname"><span class="pre">EventReprocessingStarted</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">14</span></em><a class="headerlink" href="#qtm.QRTEvent.EventReprocessingStarted" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventReprocessingStarted">
+<span class="sig-name descname"><span class="pre">EventReprocessingStarted</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">14</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventReprocessingStarted" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventReprocessingStopped">
-<span class="sig-name descname"><span class="pre">EventReprocessingStopped</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">15</span></em><a class="headerlink" href="#qtm.QRTEvent.EventReprocessingStopped" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventReprocessingStopped">
+<span class="sig-name descname"><span class="pre">EventReprocessingStopped</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">15</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventReprocessingStopped" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventTrigger">
-<span class="sig-name descname"><span class="pre">EventTrigger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">16</span></em><a class="headerlink" href="#qtm.QRTEvent.EventTrigger" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventTrigger">
+<span class="sig-name descname"><span class="pre">EventTrigger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">16</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventTrigger" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.QRTEvent.EventNone">
-<span class="sig-name descname"><span class="pre">EventNone</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">17</span></em><a class="headerlink" href="#qtm.QRTEvent.EventNone" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTEvent.EventNone">
+<span class="sig-name descname"><span class="pre">EventNone</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">17</span></em><a class="headerlink" href="#qtm_rt.QRTEvent.EventNone" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -607,102 +607,102 @@ first entry in the returned array.</p>
 <section id="qrtcomponenttype">
 <h3><a class="toc-backref" href="#id7" role="doc-backlink">QRTComponentType</a><a class="headerlink" href="#qrtcomponenttype" title="Permalink to this heading">¶</a></h3>
 <dl class="py class">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qtm.packet.</span></span><span class="sig-name descname"><span class="pre">QRTComponentType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.packet.QRTComponentType" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qtm_rt.packet.</span></span><span class="sig-name descname"><span class="pre">QRTComponentType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.packet.QRTComponentType" title="Permalink to this definition">¶</a></dt>
 <dd><p>QTM Component types</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.Component3d">
-<span class="sig-name descname"><span class="pre">Component3d</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.Component3d" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.Component3d">
+<span class="sig-name descname"><span class="pre">Component3d</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.Component3d" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.Component3dNoLabels">
-<span class="sig-name descname"><span class="pre">Component3dNoLabels</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.Component3dNoLabels" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.Component3dNoLabels">
+<span class="sig-name descname"><span class="pre">Component3dNoLabels</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.Component3dNoLabels" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.ComponentAnalog">
-<span class="sig-name descname"><span class="pre">ComponentAnalog</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentAnalog" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.ComponentAnalog">
+<span class="sig-name descname"><span class="pre">ComponentAnalog</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.ComponentAnalog" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.ComponentForce">
-<span class="sig-name descname"><span class="pre">ComponentForce</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentForce" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.ComponentForce">
+<span class="sig-name descname"><span class="pre">ComponentForce</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.ComponentForce" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.Component6d">
-<span class="sig-name descname"><span class="pre">Component6d</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.Component6d" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.Component6d">
+<span class="sig-name descname"><span class="pre">Component6d</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.Component6d" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.Component6dEuler">
-<span class="sig-name descname"><span class="pre">Component6dEuler</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.Component6dEuler" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.Component6dEuler">
+<span class="sig-name descname"><span class="pre">Component6dEuler</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.Component6dEuler" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.Component2d">
-<span class="sig-name descname"><span class="pre">Component2d</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.Component2d" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.Component2d">
+<span class="sig-name descname"><span class="pre">Component2d</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.Component2d" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.Component2dLin">
-<span class="sig-name descname"><span class="pre">Component2dLin</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.Component2dLin" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.Component2dLin">
+<span class="sig-name descname"><span class="pre">Component2dLin</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.Component2dLin" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.Component3dRes">
-<span class="sig-name descname"><span class="pre">Component3dRes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.Component3dRes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.Component3dRes">
+<span class="sig-name descname"><span class="pre">Component3dRes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.Component3dRes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.Component3dNoLabelsRes">
-<span class="sig-name descname"><span class="pre">Component3dNoLabelsRes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.Component3dNoLabelsRes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.Component3dNoLabelsRes">
+<span class="sig-name descname"><span class="pre">Component3dNoLabelsRes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.Component3dNoLabelsRes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.Component6dRes">
-<span class="sig-name descname"><span class="pre">Component6dRes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">11</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.Component6dRes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.Component6dRes">
+<span class="sig-name descname"><span class="pre">Component6dRes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">11</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.Component6dRes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.Component6dEulerRes">
-<span class="sig-name descname"><span class="pre">Component6dEulerRes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.Component6dEulerRes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.Component6dEulerRes">
+<span class="sig-name descname"><span class="pre">Component6dEulerRes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.Component6dEulerRes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.ComponentAnalogSingle">
-<span class="sig-name descname"><span class="pre">ComponentAnalogSingle</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">13</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentAnalogSingle" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.ComponentAnalogSingle">
+<span class="sig-name descname"><span class="pre">ComponentAnalogSingle</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">13</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.ComponentAnalogSingle" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.ComponentImage">
-<span class="sig-name descname"><span class="pre">ComponentImage</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">14</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentImage" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.ComponentImage">
+<span class="sig-name descname"><span class="pre">ComponentImage</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">14</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.ComponentImage" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.ComponentForceSingle">
-<span class="sig-name descname"><span class="pre">ComponentForceSingle</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">15</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentForceSingle" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.ComponentForceSingle">
+<span class="sig-name descname"><span class="pre">ComponentForceSingle</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">15</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.ComponentForceSingle" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.ComponentGazeVector">
-<span class="sig-name descname"><span class="pre">ComponentGazeVector</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">16</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentGazeVector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.ComponentGazeVector">
+<span class="sig-name descname"><span class="pre">ComponentGazeVector</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">16</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.ComponentGazeVector" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.ComponentTimecode">
-<span class="sig-name descname"><span class="pre">ComponentTimecode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">17</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentTimecode" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.ComponentTimecode">
+<span class="sig-name descname"><span class="pre">ComponentTimecode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">17</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.ComponentTimecode" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.ComponentSkeleton">
-<span class="sig-name descname"><span class="pre">ComponentSkeleton</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">18</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentSkeleton" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.ComponentSkeleton">
+<span class="sig-name descname"><span class="pre">ComponentSkeleton</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">18</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.ComponentSkeleton" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="qtm.packet.QRTComponentType.ComponentEyeTracker">
-<span class="sig-name descname"><span class="pre">ComponentEyeTracker</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">19</span></em><a class="headerlink" href="#qtm.packet.QRTComponentType.ComponentEyeTracker" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.packet.QRTComponentType.ComponentEyeTracker">
+<span class="sig-name descname"><span class="pre">ComponentEyeTracker</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">19</span></em><a class="headerlink" href="#qtm_rt.packet.QRTComponentType.ComponentEyeTracker" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -711,8 +711,8 @@ first entry in the returned array.</p>
 <section id="exceptions">
 <h3><a class="toc-backref" href="#id8" role="doc-backlink">Exceptions</a><a class="headerlink" href="#exceptions" title="Permalink to this heading">¶</a></h3>
 <dl class="py class">
-<dt class="sig sig-object py" id="qtm.QRTCommandException">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qtm.</span></span><span class="sig-name descname"><span class="pre">QRTCommandException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm.QRTCommandException" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="qtm_rt.QRTCommandException">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qtm_rt.</span></span><span class="sig-name descname"><span class="pre">QRTCommandException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtm_rt.QRTCommandException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Basic RT Command Exception</p>
 </dd></dl>
 
@@ -738,14 +738,15 @@ first entry in the returned array.</p>
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="deprecated.html">Upgrade information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deprecated.html">3.0.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deprecated.html#id2">2.0.0</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="deprecated.html" title="next chapter">Upgrade information</a></li>
+      <li>Next: <a href="deprecated.html" title="next chapter">3.0.0</a></li>
   </ul></li>
 </ul>
 </div>
