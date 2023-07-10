@@ -52,8 +52,12 @@ class QRTDiscoveryProtocol:
                 QRTDiscoveryPacketSize, QRTPacketType.PacketDiscover.value
             )
             + QRTDiscoveryP2.pack(self.port),
-            ("<broadcast>", 22226),
+            ("255.255.255.255", 22226)
         )
+
+    def error_received(self, error):
+        """ On error """
+        LOG.exception("QRTDiscoveryProtocol %s", error)
 
 class Discover:
     """async discovery of qtm instances"""
