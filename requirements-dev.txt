@@ -7,3 +7,5 @@ rope==1.8.0
 sphinx==5.3.0
 sphinxcontrib-asyncio==0.3.0
 lxml==4.9.2
+wheel==0.40.0
+twine==4.0.2
