@@ -65,14 +65,15 @@ async def test_await_event_multiple(event_loop, qtmprotocol: QTMProtocol):
 
 @pytest.mark.asyncio
 async def test_await_multiple(qtmprotocol: QTMProtocol):
-    awaitable1 = qtmprotocol.await_event(event=QRTEvent.EventConnected)
-    awaitable2 = qtmprotocol.await_event(event=QRTEvent.EventConnectionClosed)
+    loop = asyncio.get_event_loop()
+    awaitable1 = loop.create_task(qtmprotocol.await_event(event=QRTEvent.EventConnected))
+    awaitable2 = loop.create_task(qtmprotocol.await_event(event=QRTEvent.EventConnectionClosed))
 
     done, _ = await asyncio.wait(
         [awaitable1, awaitable2], return_when=asyncio.FIRST_EXCEPTION
     )
 
     print(done)
-
+    
     with pytest.raises(Exception):
         done.pop().result()
