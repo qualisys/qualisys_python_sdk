@@ -1,7 +1,7 @@
 Welcome to Qualisys SDK for Python's documentation!
 ===================================================
 
-This document describes the Qualisys SDK for Python version 3.0.0
+This document describes the Qualisys SDK for Python version 3.0.1
 
 **NOTE:** Major versions introduces breaking changes. :ref:`More info...<deprecated_version>`
 
