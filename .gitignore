@@ -14,3 +14,4 @@ _templates
 /.pytest_cache
 */__pycache__
 .coverage*
+examples/pyside6_example/.DS_Store
