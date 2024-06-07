@@ -32,31 +32,35 @@ async def test_await_any_event_timeout(qtmprotocol: QTMProtocol):
 
 
 @pytest.mark.asyncio
-async def test_await_any_event(event_loop, qtmprotocol: QTMProtocol):
+async def test_await_any_event(qtmprotocol: QTMProtocol):
     awaitable = qtmprotocol.await_event(timeout=1)
-    event_loop.call_later(0, lambda: qtmprotocol._on_event(QRTEvent.EventConnected))
+    asyncio.get_running_loop().call_later(0, lambda: qtmprotocol._on_event(QRTEvent.EventConnected))
     result = await awaitable
 
     assert result == QRTEvent.EventConnected
 
 
 @pytest.mark.asyncio
-async def test_await_specific_event(event_loop, qtmprotocol: QTMProtocol):
+async def test_await_specific_event(qtmprotocol: QTMProtocol):
     awaitable = qtmprotocol.await_event(event=QRTEvent.EventConnected, timeout=1)
-    event_loop.call_later(0, lambda: qtmprotocol._on_event(QRTEvent.EventConnected))
+    asyncio.get_running_loop().call_later(
+        0, lambda: qtmprotocol._on_event(QRTEvent.EventConnected)
+    )
     result = await awaitable
 
     assert result == QRTEvent.EventConnected
 
 
 @pytest.mark.asyncio
-async def test_await_event_multiple(event_loop, qtmprotocol: QTMProtocol):
+async def test_await_event_multiple(qtmprotocol: QTMProtocol):
     awaitable = qtmprotocol.await_event(event=QRTEvent.EventConnected, timeout=1)
 
-    event_loop.call_later(
+    asyncio.get_running_loop().call_later(
         0, lambda: qtmprotocol._on_event(QRTEvent.EventConnectionClosed)
     )
-    event_loop.call_later(0.1, lambda: qtmprotocol._on_event(QRTEvent.EventConnected))
+    asyncio.get_running_loop().call_later(
+        0.1, lambda: qtmprotocol._on_event(QRTEvent.EventConnected)
+    )
 
     result = await awaitable
 
@@ -73,7 +77,5 @@ async def test_await_multiple(qtmprotocol: QTMProtocol):
         [awaitable1, awaitable2], return_when=asyncio.FIRST_EXCEPTION
     )
 
-    print(done)
-    
     with pytest.raises(Exception):
         done.pop().result()
