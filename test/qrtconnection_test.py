@@ -15,20 +15,20 @@ from qtm_rt.protocol import QTMProtocol, QRTCommandException
 
 @pytest.mark.parametrize("exception", [ConnectionRefusedError, TimeoutError, OSError])
 @pytest.mark.asyncio
-async def test_connect_connection_fail(exception, event_loop, mocker):
+async def test_connect_connection_fail(exception, mocker):
     mocker.patch.object(
-        event_loop, "create_connection", mocker.MagicMock(side_effect=exception)
+        asyncio.get_running_loop(), "create_connection", mocker.MagicMock(side_effect=exception)
     )
     result = await connect("192.0.2.0")
     assert result is None
 
 
 @pytest.mark.asyncio
-async def test_connect_no_loop(event_loop, mocker):
-    mocker.patch("asyncio.get_event_loop", mocker.MagicMock(return_value=event_loop))
+async def test_connect_no_loop(mocker):
+    mocker.patch("asyncio.get_event_loop", mocker.MagicMock(return_value=asyncio.get_running_loop()))
 
     mocker.patch.object(
-        event_loop,
+        asyncio.get_running_loop(),
         "create_connection",
         mocker.MagicMock(side_effect=ConnectionRefusedError),
     )
@@ -38,28 +38,28 @@ async def test_connect_no_loop(event_loop, mocker):
 
 
 @pytest.mark.asyncio
-async def test_connect_loop(event_loop, mocker):
+async def test_connect_loop(mocker):
     mocker.patch("asyncio.get_event_loop", mocker.MagicMock())
 
     mocker.patch.object(
-        event_loop,
+        asyncio.get_running_loop(),
         "create_connection",
         mocker.MagicMock(side_effect=ConnectionRefusedError),
     )
 
-    await connect("192.0.2.0", loop=event_loop)
+    await connect("192.0.2.0", loop=asyncio.get_running_loop())
     assert asyncio.get_event_loop.call_count == 0
 
 
 @pytest.mark.asyncio
-async def test_connect_set_version(event_loop, mocker):
+async def test_connect_set_version(mocker):
     protocol = mocker.MagicMock()
 
     async def side_effect(*_):
         return None, protocol
 
     mocker.patch.object(
-        event_loop, "create_connection", mocker.MagicMock(side_effect=side_effect)
+        asyncio.get_running_loop(), "create_connection", mocker.MagicMock(side_effect=side_effect)
     )
 
     await connect("192.0.2.0")
@@ -67,7 +67,7 @@ async def test_connect_set_version(event_loop, mocker):
 
 
 @pytest.mark.asyncio
-async def test_connect_success(event_loop, mocker):
+async def test_connect_success(mocker):
     async def set_version(*_):
         pass
 
@@ -78,7 +78,7 @@ async def test_connect_success(event_loop, mocker):
     protocol.set_version = set_version
 
     mocker.patch.object(
-        event_loop, "create_connection", mocker.MagicMock(side_effect=side_effect)
+        asyncio.get_running_loop(), "create_connection", mocker.MagicMock(side_effect=side_effect)
     )
 
     connection = await connect("192.0.2.0")

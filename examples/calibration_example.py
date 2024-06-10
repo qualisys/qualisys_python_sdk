@@ -3,7 +3,7 @@
 import asyncio
 import logging
 import qtm_rt
-from lxml import etree
+import xml.etree.ElementTree as ET
 
 LOG = logging.getLogger("example")
 
@@ -33,16 +33,11 @@ async def setup():
         except Exception as e:
             LOG.error(e)
         else:
-            root = etree.fromstring(cal_response)
-            print(etree.tostring(root, pretty_print=True).decode())
+            root = ET.fromstring(cal_response)
+            print(ET.tostring(root, pretty_print=True).decode())
 
     # tell qtm to stop streaming
     await connection.stream_frames_stop()
 
-    # stop the event loop, thus exiting the run_forever call
-    loop.stop()    
-
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    asyncio.ensure_future(setup())
-    loop.run_forever()
+    asyncio.run(setup())

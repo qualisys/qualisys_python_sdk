@@ -36,11 +36,11 @@ already streaming data, either live or RT from file.
 QTM RT Protocol
 ---------------
 
-An instance of QRTConnection is returned when qtm_rt.connect_ successfully connects to QTM.
+An instance of QRTConnection is returned when qtm_rt.connect successfully connects to QTM.
 
-Functions marked as coroutines need to be run in a async function and awaited, please see example above.
+Functions marked as async need to be run in a async function and awaited, please see example above.
 
-.. autocofunction:: qtm_rt.connect
+.. autofunction:: qtm_rt.connect
 
 QRTConnection
 ~~~~~~~~~~~~~
