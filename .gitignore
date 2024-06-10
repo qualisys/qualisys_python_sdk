@@ -3,6 +3,7 @@
 /qtm_rt.egg-info
 /env
 /env3
+/.venv
 /.idea
 _build
 _static
