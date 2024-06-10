@@ -64,6 +64,7 @@ python -m build
 make -C docs html
 
 # Copy build output to gh-pages branch (checkout in separate repository)
+# Make sure to keep v102/, v103/ and v212/ directories with the old documentation.
 cp -r docs/_build/html/* ../qualisys_python_sdk_gh_pages
 git -C ../qualisys_python_sdk_gh_pages commit -m "Update documentation to version x.y.z"
 git push origin gh-pages
