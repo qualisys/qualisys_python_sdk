@@ -68,7 +68,7 @@ cp -r docs/_build/html/* ../qualisys_python_sdk_gh_pages
 git -C ../qualisys_python_sdk_gh_pages commit -m "Update documentation to version x.y.z"
 git push origin gh-pages
 
-# Upload new version to pypi.org
+# Upload new version to pypi.org (needs API key)
 twine upload dist/*
 
 # Git tag and manually make release on github
