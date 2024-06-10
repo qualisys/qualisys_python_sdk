@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = "3.0.1"
+version = "3.0.2"
 
 setup(
     name="qtm-rt",
@@ -11,7 +11,7 @@ setup(
     download_url="https://github.com/qualisys/qualisys_python_sdk/tarball/{}".format(
         version
     ),
-    author="Martin Gejke",
+    author="Qualisys AB",
     author_email="support@qualisys.com",
     license="MIT",
     packages=["qtm_rt"],

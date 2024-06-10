@@ -41,3 +41,37 @@ GetCaptureC3D is not implemented.
 GetCaptureQTM is not implemented.
 
 No support for selecting analog channel.
+
+Development
+-----------
+
+Use the following `bash` commands in sequence to build the distribution and
+documentation:
+
+```
+# Setup build environment
+python -m venv .venv
+source ./.venv/Scripts/activate
+pip install -r requirements-dev.txt
+
+# Run tests
+pytest tests
+
+# Build source tarball and python wheel in dist/
+python -m build
+
+# Build sphinx documentation in docs/_build/html/
+make -C docs html
+
+# Copy build output to gh-pages branch (checkout in separate repository)
+cp -r docs/_build/html/* ../qualisys_python_sdk_gh_pages
+git -C ../qualisys_python_sdk_gh_pages commit -m "Update documentation to version x.y.z"
+git push origin gh-pages
+
+# Upload new version to pypi.org (needs API key)
+twine upload dist/*
+
+# Git tag and manually make release on github
+git tag vx.y.z
+git push --tags
+```
