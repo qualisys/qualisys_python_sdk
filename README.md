@@ -57,7 +57,7 @@ source ./.venv/Scripts/activate
 pip install -r requirements-dev.txt
 
 # Run tests
-pytest tests
+pytest test/
 
 # Build source tarball and python wheel in dist/
 python -m build
@@ -65,11 +65,13 @@ python -m build
 # Build sphinx documentation in docs/_build/html/
 make -C docs html
 
-# Copy build output to gh-pages branch (checkout in separate repository)
+# Copy build output to gh-pages branch (checked out in a separate clone of the repository in ../qualisys_python_sdk_gh_pages)
 # Make sure to keep v102/, v103/ and v212/ directories with the old documentation.
 cp -r docs/_build/html/* ../qualisys_python_sdk_gh_pages
-git -C ../qualisys_python_sdk_gh_pages commit -m "Update documentation to version x.y.z"
-git push origin gh-pages
+# Commit the changes with a message like "Update documentation to version x.y.z"
+git -C ../qualisys_python_sdk_gh_pages add .
+git -C ../qualisys_python_sdk_gh_pages commit
+git -C ../qualisys_python_sdk_gh_pages push origin gh-pages
 
 # Upload new version to https://pypi.org/project/qtm-rt (needs API key)
 twine upload dist/*
