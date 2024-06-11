@@ -1,6 +1,8 @@
 Qualisys SDK for Python
 ================================
 
+![PyPI - Version](https://img.shields.io/pypi/v/qtm_rt)
+
 The Qualisys SDK for Python implements our RealTime(RT) protocol and works with Python 3.5 and above.
 
 Installation
