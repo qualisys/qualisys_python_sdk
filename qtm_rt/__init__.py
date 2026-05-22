@@ -19,12 +19,18 @@ from .receiver import Receiver
 # pylint: disable=C0330
 
 LOG = logging.getLogger("qtm_rt")
-LOG_LEVEL = os.getenv("QTM_LOGGING", None)
 
-LEVEL = logging.DEBUG if LOG_LEVEL == "debug" else logging.INFO
-logging.basicConfig(
-    level=LEVEL, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
+# Library logging hygiene: configure the qtm_rt logger only, never the root
+# logger. The previous logging.basicConfig() call here mutated root config at
+# import time, causing duplicate output for any application that also set up
+# logging (issue #44).
+if not LOG.handlers:
+    LOG.setLevel(logging.DEBUG if os.getenv("QTM_LOGGING") == "debug" else logging.INFO)
+    _qtm_rt_handler = logging.StreamHandler()
+    _qtm_rt_handler.setFormatter(
+        logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    )
+    LOG.addHandler(_qtm_rt_handler)
 
 
 __author__ = "mge"
