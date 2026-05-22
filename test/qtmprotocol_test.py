@@ -3,6 +3,7 @@
 """
 
 import asyncio
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -79,3 +80,82 @@ async def test_await_multiple(qtmprotocol: QTMProtocol):
 
     with pytest.raises(Exception):
         done.pop().result()
+
+
+def _attach_transport(qtmprotocol: QTMProtocol):
+    qtmprotocol.transport = MagicMock()
+
+
+@pytest.mark.asyncio
+async def test_responses_match_commands_in_fifo_order(qtmprotocol: QTMProtocol):
+    _attach_transport(qtmprotocol)
+
+    future_a = qtmprotocol.send_command("a")
+    future_b = qtmprotocol.send_command("b")
+
+    qtmprotocol._on_command(b"response_a")
+    qtmprotocol._on_command(b"response_b")
+
+    assert await future_a == b"response_a"
+    assert await future_b == b"response_b"
+
+
+@pytest.mark.asyncio
+async def test_late_response_to_cancelled_future_does_not_crash(
+    qtmprotocol: QTMProtocol,
+):
+    _attach_transport(qtmprotocol)
+
+    cancelled_future = qtmprotocol.send_command("save")
+    cancelled_future.cancel()
+
+    later_future = qtmprotocol.send_command("releasecontrol")
+
+    # Late response to "save" is dropped (caller gave up); next response goes to
+    # "releasecontrol". Neither must raise InvalidStateError.
+    qtmprotocol._on_command(b"Measurement saved")
+    qtmprotocol._on_command(b"You are now a regular client")
+
+    assert await later_future == b"You are now a regular client"
+
+
+@pytest.mark.asyncio
+async def test_unsolicited_error_does_not_raise(qtmprotocol: QTMProtocol):
+    _attach_transport(qtmprotocol)
+
+    # Empty request queue. Old behaviour raised QRTCommandException from inside
+    # data_received and killed the transport.
+    qtmprotocol._on_error(b"some unsolicited error")
+
+    # Subsequent commands still work.
+    future = qtmprotocol.send_command("a")
+    qtmprotocol._on_command(b"response_a")
+    assert await future == b"response_a"
+
+
+@pytest.mark.asyncio
+async def test_error_for_cancelled_future_does_not_raise(qtmprotocol: QTMProtocol):
+    _attach_transport(qtmprotocol)
+
+    # Error packet arrives for a command whose caller already gave up.
+    # Must not raise InvalidStateError out of data_received.
+    cancelled_future = qtmprotocol.send_command("save")
+    cancelled_future.cancel()
+
+    qtmprotocol._on_error(b"some error for the cancelled save")
+
+    # Subsequent commands still work — transport was not torn down.
+    future = qtmprotocol.send_command("a")
+    qtmprotocol._on_command(b"response_a")
+    assert await future == b"response_a"
+
+
+@pytest.mark.asyncio
+async def test_error_propagates_to_next_live_caller(qtmprotocol: QTMProtocol):
+    _attach_transport(qtmprotocol)
+
+    future = qtmprotocol.send_command("stop")
+    qtmprotocol._on_error(b"No measurement is running")
+
+    with pytest.raises(QRTCommandException):
+        await future
