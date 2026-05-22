@@ -33,6 +33,23 @@ Examples
 
 See the examples folder.
 
+Logging
+-------
+
+The SDK logs through the standard `logging` module under the `qtm_rt` logger
+and does not emit any output on its own. Call `logging.basicConfig()` (or
+attach a handler to the `qtm_rt` logger) in your application to see the
+messages:
+
+```python
+import logging
+logging.basicConfig(level=logging.INFO)
+```
+
+Setting the environment variable `QTM_LOGGING=debug` lowers the `qtm_rt`
+logger's threshold to `DEBUG`. It does not, by itself, produce output —
+configure a handler as above.
+
 Missing RT features and limitations
 -----------------------------------
 

@@ -5,6 +5,7 @@ import logging
 import qtm_rt
 import xml.etree.ElementTree as ET
 
+logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger("example")
 
 async def setup():
