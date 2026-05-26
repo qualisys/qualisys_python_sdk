@@ -18,7 +18,7 @@ This document describes the Qualisys SDK for Python version 3.0.2
 Installation:
 -------------
 
-This package is a pure python package and requires at least Python 3.5.3, the easiest way to install it is:
+This package is a pure python package and requires at least Python 3.7, the easiest way to install it is:
 
 .. code-block:: console
 

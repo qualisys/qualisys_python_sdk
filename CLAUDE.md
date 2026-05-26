@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-`qtm_rt` is the Qualisys SDK for Python — a client library that implements Qualisys' RealTime (RT) protocol for talking to QTM (Qualisys Track Manager). Published to PyPI as `qtm-rt`. Targets Python 3.5.3+ and RT protocol version 1.8+. Little-endian only; default port 22223.
+`qtm_rt` is the Qualisys SDK for Python — a client library that implements Qualisys' RealTime (RT) protocol for talking to QTM (Qualisys Track Manager). Published to PyPI as `qtm-rt`. Targets Python 3.7+ and RT protocol version 1.8+. Little-endian only; default port 22223.
 
 ## Common commands
 
@@ -47,7 +47,6 @@ Key invariants when modifying:
 - Component and parameter names accepted by `stream_frames` / `get_current_frame` / `get_parameters` are validated against hardcoded allow-lists in `qrt.py` (`_validate_components` and the inline list in `get_parameters`). Adding a new RT component requires updating **both** that list and `packet.py`.
 - `request_queue` is consumed with `.pop()` (LIFO from the right), so its order must match the order replies arrive — be careful when adding new code paths that enqueue futures.
 - `on_packet` callbacks are sync; they run inside the asyncio event loop, so blocking work there will stall the protocol.
-- The package's `__init__.py` gates the Python 3 imports behind a `PYTHON3` check — Python 2 callers only get `QRTPacket`, `QRTEvent`, `Receiver`. Don't move the Py3-only imports out of that guard unless dropping 3.5 support.
 
 ## Testing notes
 

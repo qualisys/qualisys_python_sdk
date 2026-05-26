@@ -1,18 +1,13 @@
 """ Python SDK for QTM """
 
 import logging
-import sys
 import os
 
-PYTHON3 = sys.version_info.major == 3
-
-if PYTHON3:
-    from .discovery import Discover
-    from .reboot import reboot
-    from .qrt import connect, QRTConnection
-    from .protocol import QRTCommandException
-    from .control import TakeControl
-
+from .discovery import Discover
+from .reboot import reboot
+from .qrt import connect, QRTConnection
+from .protocol import QRTCommandException
+from .control import TakeControl
 from .packet import QRTPacket, QRTEvent
 from .receiver import Receiver
 
