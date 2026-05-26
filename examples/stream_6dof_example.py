@@ -3,12 +3,12 @@
 """
 
 import asyncio
+import os
 import xml.etree.ElementTree as ET
-import pkg_resources
 
 import qtm_rt
 
-QTM_FILE = pkg_resources.resource_filename("qtm_rt", "data/Demo.qtm")
+QTM_FILE = os.path.join(os.path.dirname(qtm_rt.__file__), "data", "Demo.qtm")
 
 
 def create_body_index(xml_string):

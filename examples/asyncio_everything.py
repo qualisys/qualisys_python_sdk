@@ -3,7 +3,7 @@
 import logging
 import asyncio
 import argparse
-import pkg_resources
+import os
 
 import qtm_rt
 
@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger("example")
 
 
-QTM_FILE = pkg_resources.resource_filename("qtm_rt", "data/Demo.qtm")
+QTM_FILE = os.path.join(os.path.dirname(qtm_rt.__file__), "data", "Demo.qtm")
 
 
 class AsyncEnumerate:
