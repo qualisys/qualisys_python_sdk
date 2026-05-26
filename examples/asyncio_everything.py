@@ -165,4 +165,4 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    asyncio.get_event_loop().run_until_complete(main(interface=args.ip))
+    asyncio.run(main(interface=args.ip))

@@ -29,7 +29,7 @@ async def package_receiver(queue):
     LOG.info("Exiting package_receiver")
 
 
-async def shutdown(delay, connection, receiver_future, queue):
+async def shutdown(delay, connection, receiver_future, queue, done):
 
     # wait desired time before exiting
     await asyncio.sleep(delay)
@@ -41,11 +41,11 @@ async def shutdown(delay, connection, receiver_future, queue):
     # tell qtm to stop streaming
     await connection.stream_frames_stop()
 
-    # stop the event loop, thus exiting the run_forever call
-    loop.stop()
+    # signal main() to return so asyncio.run() can exit
+    done.set()
 
 
-async def setup():
+async def main():
     """ main function """
 
     connection = await qtm_rt.connect("127.0.0.1")
@@ -65,15 +65,16 @@ async def setup():
                 return -1
 
         queue = asyncio.Queue()
+        done = asyncio.Event()
 
         receiver_future = asyncio.ensure_future(package_receiver(queue))
 
         await connection.stream_frames(components=["2d"], on_packet=queue.put_nowait)
 
-        asyncio.ensure_future(shutdown(30, connection, receiver_future, queue))
+        asyncio.ensure_future(shutdown(30, connection, receiver_future, queue, done))
+
+        await done.wait()
 
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    asyncio.ensure_future(setup())
-    loop.run_forever()
+    asyncio.run(main())
