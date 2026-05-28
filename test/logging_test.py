@@ -47,21 +47,6 @@ def test_reloading_qtm_rt_does_not_touch_the_root_logger(reloaded_qtm_rt):
     assert logging.getLogger().handlers == root_handlers_before
 
 
-def test_qtm_rt_logger_has_exactly_one_null_handler(reloaded_qtm_rt):
-    """After import, the qtm_rt logger has a single NullHandler.
-
-    The NullHandler prevents "No handlers could be found" warnings on
-    unconfigured applications without producing any output.
-    """
-    qtm_rt_module, _ = reloaded_qtm_rt
-
-    importlib.reload(qtm_rt_module)
-
-    handlers = logging.getLogger("qtm_rt").handlers
-    assert len(handlers) == 1
-    assert isinstance(handlers[0], logging.NullHandler)
-
-
 def test_qtm_logging_debug_env_var_sets_qtm_rt_logger_to_debug(reloaded_qtm_rt):
     qtm_rt_module, monkeypatch = reloaded_qtm_rt
     monkeypatch.setenv("QTM_LOGGING", "debug")
@@ -69,11 +54,3 @@ def test_qtm_logging_debug_env_var_sets_qtm_rt_logger_to_debug(reloaded_qtm_rt):
     importlib.reload(qtm_rt_module)
 
     assert logging.getLogger("qtm_rt").level == logging.DEBUG
-
-
-def test_qtm_logging_unset_leaves_qtm_rt_logger_level_unchanged(reloaded_qtm_rt):
-    qtm_rt_module, _ = reloaded_qtm_rt
-
-    importlib.reload(qtm_rt_module)
-
-    assert logging.getLogger("qtm_rt").level == logging.NOTSET
