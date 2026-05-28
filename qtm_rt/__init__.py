@@ -19,12 +19,15 @@ from .receiver import Receiver
 # pylint: disable=C0330
 
 LOG = logging.getLogger("qtm_rt")
-LOG_LEVEL = os.getenv("QTM_LOGGING", None)
+LOG.addHandler(logging.NullHandler())
 
-LEVEL = logging.DEBUG if LOG_LEVEL == "debug" else logging.INFO
-logging.basicConfig(
-    level=LEVEL, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
+# Library logging hygiene (issue #44): the SDK never emits output on its own.
+# QTM_LOGGING only lowers the qtm_rt logger's threshold. It does not attach
+# handlers or emit anything — the application still owns all output. Setting a
+# logger's level is benign (it affects only this logger); attaching handlers or
+# calling logging.basicConfig() from a library is not, so we don't.
+if os.getenv("QTM_LOGGING") == "debug":
+    LOG.setLevel(logging.DEBUG)
 
 
 __author__ = "mge"

@@ -9,6 +9,8 @@ import os
 import qtm_rt
 import xml.etree.ElementTree as ET
 
+logging.basicConfig(level=logging.INFO)
+
 
 def output_format(output_path):
     extension = os.path.splitext(output_path)[1].lower()

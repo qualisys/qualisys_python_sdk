@@ -9,6 +9,7 @@ import logging
 
 import qtm_rt
 
+logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger("example")
 
 
