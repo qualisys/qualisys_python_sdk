@@ -132,12 +132,23 @@ class QTMProtocol(asyncio.Protocol):
         """ Received from QTM and route accordingly """
         self._receiver.data_received(data)
 
+    def _pop_next_pending_future(self):
+        # QTM responds in command order, so pair each response with the next
+        # future FIFO. If that future is already done (caller gave up via
+        # asyncio.wait_for timeout), drop the response with it — never call
+        # set_result/set_exception on a done future, that raises
+        # InvalidStateError out of data_received and tears down the transport.
+        if not self.request_queue:
+            return None
+        future = self.request_queue.popleft()
+        if future.done():
+            return None
+        return future
+
     def _deliver_promise(self, data):
-        try:
-            future = self.request_queue.pop()
+        future = self._pop_next_pending_future()
+        if future is not None:
             future.set_result(data)
-        except IndexError:
-            pass
 
     def _on_data(self, packet):
         if self.on_packet is not None:
@@ -171,11 +182,13 @@ class QTMProtocol(asyncio.Protocol):
         LOG.debug("Error: %s", response)
         if self._start_streaming:
             self.set_on_packet(None)
-        try:
-            future = self.request_queue.pop()
+        future = self._pop_next_pending_future()
+        if future is not None:
             future.set_exception(QRTCommandException(response))
-        except IndexError:
-            raise QRTCommandException(response)
+        else:
+            # Unsolicited error (no caller waiting). Raising here would crash
+            # data_received and close the transport, so just log.
+            LOG.warning("Unsolicited error from QTM: %s", response)
 
     def _on_xml(self, response):
         LOG.debug("XML: %s ...", response[: min(len(response), 70)])
