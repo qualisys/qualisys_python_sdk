@@ -31,7 +31,11 @@ https://qualisys.github.io/qualisys_python_sdk/index.html
 Examples
 --------
 
-See the examples folder.
+See the examples folder in the GitHub repository. The examples and demo capture
+file are also published as `qtm-rt-examples.zip` on each GitHub release.
+
+The demo capture file `Demo.qtm` is not included in the PyPI package. Download
+the release asset when running examples that use `--qtm-file`.
 
 Logging
 -------

@@ -55,3 +55,25 @@ jobs:
 
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+
+  upload-release-assets:
+    name: Upload release assets
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Package examples and demo data
+        run: |
+          cp qtm_rt/data/Demo.qtm Demo.qtm
+          zip -r qtm-rt-examples.zip examples Demo.qtm
+
+      - name: Upload assets to GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$RELEASE_TAG" qtm-rt-examples.zip --clobber
