@@ -8,7 +8,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from qtm_rt.protocol import QTMProtocol, QRTCommandException
-from qtm_rt.packet import QRTEvent, RTEvent
+from qtm_rt.packet import QRTEvent
 
 # pylint: disable=W0621, C0111, W0212
 

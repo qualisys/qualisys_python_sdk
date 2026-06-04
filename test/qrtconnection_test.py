@@ -316,7 +316,7 @@ async def test_calibrate_fail(a_qrt):
     a_qrt._protocol.receive_response.side_effect = xml
 
     with pytest.raises(QRTCommandException):
-        response = await a_qrt.calibrate()
+        await a_qrt.calibrate()
 
     a_qrt._protocol.send_command.assert_called_once_with("calibrate")
 

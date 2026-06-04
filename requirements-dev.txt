@@ -2,5 +2,6 @@ build==1.2.1
 pytest-asyncio==0.23.7
 pytest-mock==3.14.0
 pytest==8.2.2
+ruff==0.15.15
 sphinx==7.3.7
 twine==6.2.0

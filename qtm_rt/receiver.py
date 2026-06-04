@@ -2,7 +2,7 @@ import logging
 
 from qtm_rt.packet import QRTPacketType
 from qtm_rt.packet import QRTPacket, QRTEvent
-from qtm_rt.packet import RTheader, RTEvent, RTCommand
+from qtm_rt.packet import RTheader, RTEvent
 
 LOG = logging.getLogger("qtm_rt")
 
@@ -17,16 +17,16 @@ class Receiver(object):
         self._received_data += data
         h_size = RTheader.size
         data = self._received_data
-        data_len = len(data);
+        data_len = len(data)
 
         while data_len >= h_size:
             size, type_ = RTheader.unpack_from(data, 0)
             if data_len >= size:
                 self._parse_received(data[h_size:size], type_)
                 data = data[size:]
-                data_len = len(data);
+                data_len = len(data)
             else:
-                break;
+                break
 
         self._received_data = data
 
