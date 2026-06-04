@@ -23,6 +23,9 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements-dev.txt
 
+      - name: Lint
+        run: python -m ruff check .
+
       - name: Run tests
         run: python -m pytest test/
 

@@ -8,8 +8,7 @@ import collections
 import logging
 
 from qtm_rt.packet import QRTPacketType
-from qtm_rt.packet import QRTPacket, QRTEvent
-from qtm_rt.packet import RTheader, RTEvent, RTCommand
+from qtm_rt.packet import RTheader, RTCommand
 from qtm_rt.receiver import Receiver
 
 # pylint: disable=C0330

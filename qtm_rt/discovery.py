@@ -75,9 +75,8 @@ class Discover:
         loop = asyncio.get_event_loop()
         if self.first:
 
-            protocol_factory = lambda: QRTDiscoveryProtocol(
-                receiver=self.queue.put_nowait
-            )
+            def protocol_factory():
+                return QRTDiscoveryProtocol(receiver=self.queue.put_nowait)
 
             _, protocol = await loop.create_datagram_endpoint(
                 protocol_factory,
