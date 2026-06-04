@@ -3,4 +3,4 @@ pytest-asyncio==0.23.7
 pytest-mock==3.14.0
 pytest==8.2.2
 sphinx==7.3.7
-twine==5.1.0
+twine==6.2.0

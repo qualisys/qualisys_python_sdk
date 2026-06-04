@@ -3,7 +3,7 @@ Qualisys SDK for Python
 
 ![PyPI - Version](https://img.shields.io/pypi/v/qtm_rt)
 
-The Qualisys SDK for Python implements our RealTime(RT) protocol and works with Python 3.5 and above.
+The Qualisys SDK for Python implements our RealTime(RT) protocol and works with Python 3.10 and above.
 
 Installation
 ------------
@@ -79,6 +79,9 @@ pytest test/
 # Build source tarball and python wheel in dist/
 python -m build
 
+# Check the built distributions
+twine check dist/*
+
 # Build sphinx documentation in docs/_build/html/
 make -C docs html
 
@@ -90,10 +93,26 @@ git -C ../qualisys_python_sdk_gh_pages add .
 git -C ../qualisys_python_sdk_gh_pages commit
 git -C ../qualisys_python_sdk_gh_pages push origin gh-pages
 
-# Upload new version to https://pypi.org/project/qtm-rt (needs API key)
-twine upload dist/*
-
-# Git tag and manually make release on github
+# Git tag and make a release on GitHub
 git tag vx.y.z
 git push --tags
 ```
+
+Publishing
+----------
+
+Releases are published automatically to https://pypi.org/project/qtm-rt/ when a
+GitHub release is published.
+
+Before using the release workflow for the first time, configure PyPI Trusted
+Publishing for the `qtm-rt` project:
+
+```
+Owner: qualisys
+Repository name: qualisys_python_sdk
+Workflow filename: release.yml
+Environment name: pypi
+```
+
+The package version is defined in `pyproject.toml`. Update it before tagging
+and publishing a GitHub release.

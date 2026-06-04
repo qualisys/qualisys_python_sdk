@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qtm-rt"
+version = "3.0.2"
+description = "QTM Python SDK"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Qualisys AB", email = "support@qualisys.com" },
+]
+classifiers = [
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/qualisys/qualisys_python_sdk"
+Documentation = "https://qualisys.github.io/qualisys_python_sdk/index.html"
+Source = "https://github.com/qualisys/qualisys_python_sdk"
+
+[tool.setuptools]
+packages = ["qtm_rt"]
+zip-safe = true
+include-package-data = false
