@@ -3,12 +3,10 @@
 """
 
 import asyncio
+import argparse
 import xml.etree.ElementTree as ET
-import pkg_resources
 
 import qtm_rt
-
-QTM_FILE = pkg_resources.resource_filename("qtm_rt", "data/Demo.qtm")
 
 
 def create_body_index(xml_string):
@@ -21,11 +19,13 @@ def create_body_index(xml_string):
 
     return body_to_index
 
+
 def body_enabled_count(xml_string):
     xml = ET.fromstring(xml_string)
     return sum(enabled.text == "true" for enabled in xml.findall("*/Body/Enabled"))
 
-async def main():
+
+async def main(qtm_file):
 
     # Connect to qtm
     connection = await qtm_rt.connect("127.0.0.1")
@@ -45,7 +45,7 @@ async def main():
             await connection.new()
         else:
             # Load qtm file
-            await connection.load(QTM_FILE)
+            await connection.load(qtm_file)
 
             # start rtfromfile
             await connection.start(rtfromfile=True)
@@ -54,7 +54,11 @@ async def main():
     xml_string = await connection.get_parameters(parameters=["6d"])
     body_index = create_body_index(xml_string)
 
-    print("{} of {} 6DoF bodies enabled".format(body_enabled_count(xml_string), len(body_index)))
+    print(
+        "{} of {} 6DoF bodies enabled".format(
+            body_enabled_count(xml_string), len(body_index)
+        )
+    )
 
     wanted_body = "L-frame"
 
@@ -86,6 +90,19 @@ async def main():
     await connection.stream_frames_stop()
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Stream 6DoF data from QTM")
+    parser.add_argument(
+        "--qtm-file",
+        type=str,
+        required=False,
+        default="Demo.qtm",
+        help="QTM file to load for rtfromfile playback",
+    )
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
+    args = parse_args()
     # Run our asynchronous function until complete
-    asyncio.get_event_loop().run_until_complete(main())
+    asyncio.get_event_loop().run_until_complete(main(args.qtm_file))
