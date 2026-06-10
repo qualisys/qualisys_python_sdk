@@ -104,7 +104,7 @@ class QRTConnection(object):
             parameters = ["all"]
         else:
             for parameter in parameters:
-                if not parameter in [
+                if parameter not in [
                     "all",
                     "general",
                     "3d",
@@ -374,7 +374,7 @@ async def connect(
 
 def _validate_components(components):
     for component in components:
-        if not component.lower() in [
+        if component.lower() not in [
             "2d",
             "2dlin",
             "3d",

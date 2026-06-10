@@ -35,3 +35,13 @@ Source = "https://github.com/qualisys/qualisys_python_sdk"
 packages = ["qtm_rt"]
 zip-safe = true
 include-package-data = false
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+# Ruff's default rule set (pyflakes + a subset of pycodestyle), pinned
+# explicitly so a Ruff version bump can't silently change what CI enforces.
+# Broaden deliberately, e.g. add "I" (import sorting) or "UP" (pyupgrade).
+select = ["E4", "E7", "E9", "F"]

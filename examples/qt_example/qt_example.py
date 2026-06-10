@@ -70,7 +70,7 @@ class QDiscovery(QObject):
             async for qtm_instance in qtm_rt.Discover(interface):
                 info = qtm_instance.info.decode("utf-8").split(",")[0]
 
-                if not info in self._found_qtms:
+                if info not in self._found_qtms:
                     self.discoveredQTM.emit(info, qtm_instance.host)
                     self._found_qtms[info] = True
         except Exception:
