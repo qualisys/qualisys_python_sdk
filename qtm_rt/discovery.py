@@ -66,6 +66,7 @@ class Discover:
         self.ip_address = ip_address
         self.queue = asyncio.Queue()
         self.first = True
+        self._transport = None
 
     def __aiter__(self):
         return self
@@ -78,7 +79,7 @@ class Discover:
             def protocol_factory():
                 return QRTDiscoveryProtocol(receiver=self.queue.put_nowait)
 
-            _, protocol = await loop.create_datagram_endpoint(
+            self._transport, protocol = await loop.create_datagram_endpoint(
                 protocol_factory,
                 local_addr=(self.ip_address, 0),
                 allow_broadcast=True,
@@ -92,10 +93,16 @@ class Discover:
         result = await self.queue.get()
         if result is None:
             LOG.debug("Discovery timed out")
+            self._close()
             raise StopAsyncIteration
 
         LOG.debug(result)
         call_handle.cancel()
         return result
+
+    def _close(self):
+        if self._transport is not None:
+            self._transport.close()
+            self._transport = None
 
 
