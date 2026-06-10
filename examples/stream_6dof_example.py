@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 
 import qtm_rt
 
-QTM_FILE = os.path.join(os.path.dirname(qtm_rt.__file__), "data", "Demo.qtm")
+QTM_FILE = os.path.join(os.path.dirname(__file__), "Demo.qtm")
 
 
 def create_body_index(xml_string):

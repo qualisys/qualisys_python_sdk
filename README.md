@@ -31,7 +31,10 @@ https://qualisys.github.io/qualisys_python_sdk/index.html
 Examples
 --------
 
-See the examples folder.
+See the examples folder. Some examples load a `Demo.qtm` recording — it ships
+alongside the example scripts in this repo, and is also attached to each
+[GitHub Release](https://github.com/qualisys/qualisys_python_sdk/releases)
+for users who installed via pip.
 
 Logging
 -------

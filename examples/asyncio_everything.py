@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger("example")
 
 
-QTM_FILE = os.path.join(os.path.dirname(qtm_rt.__file__), "data", "Demo.qtm")
+QTM_FILE = os.path.join(os.path.dirname(__file__), "Demo.qtm")
 
 
 class AsyncEnumerate:

@@ -8,6 +8,8 @@ jobs:
   build:
     name: Build and test
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Check out repository
@@ -37,6 +39,11 @@ jobs:
         with:
           name: distributions
           path: dist/
+
+      - name: Attach Demo.qtm to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" examples/Demo.qtm --repo "${{ github.repository }}" --clobber
 
   publish:
     name: Publish to PyPI
