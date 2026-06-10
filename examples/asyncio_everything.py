@@ -3,16 +3,12 @@
 import logging
 import asyncio
 import argparse
-import pkg_resources
 
 import qtm_rt
 
 
 logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger("example")
-
-
-QTM_FILE = pkg_resources.resource_filename("qtm_rt", "data/Demo.qtm")
 
 
 class AsyncEnumerate:
@@ -66,7 +62,7 @@ async def choose_qtm_instance(interface):
     return instances[choice].host
 
 
-async def main(interface=None):
+async def main(interface=None, qtm_file="Demo.qtm"):
     """ Main function """
 
     qtm_ip = await choose_qtm_instance(interface)
@@ -89,7 +85,7 @@ async def main(interface=None):
             if result == b"Closing connection":
                 await connection.await_event(qtm_rt.QRTEvent.EventConnectionClosed)
 
-            await connection.load(QTM_FILE)
+            await connection.load(qtm_file)
 
             await connection.start(rtfromfile=True)
 
@@ -159,10 +155,19 @@ def parse_args():
         default="127.0.0.1",
         help="IP of interface to search for QTM instances",
     )
+    parser.add_argument(
+        "--qtm-file",
+        type=str,
+        required=False,
+        default="Demo.qtm",
+        help="QTM file to load for rtfromfile playback",
+    )
 
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_args()
-    asyncio.get_event_loop().run_until_complete(main(interface=args.ip))
+    asyncio.get_event_loop().run_until_complete(
+        main(interface=args.ip, qtm_file=args.qtm_file)
+    )

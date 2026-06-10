@@ -1,0 +1,3 @@
+prune examples
+prune docs
+prune qtm_rt/data
