@@ -80,74 +80,73 @@ async def main(interface=None):
         if connection is None:
             return
 
-        await connection.get_state()
-        await connection.byte_order()
-
-        async with qtm_rt.TakeControl(connection, "password"):
-
-            result = await connection.close()
-            if result == b"Closing connection":
-                await connection.await_event(qtm_rt.QRTEvent.EventConnectionClosed)
-
-            await connection.load(QTM_FILE)
-
-            await connection.start(rtfromfile=True)
-
-            (await connection.get_current_frame(components=["3d"])).get_3d_markers()
-
-            queue = asyncio.Queue()
-
-            asyncio.ensure_future(packet_receiver(queue))
-
-            try:
-                await connection.stream_frames(
-                    components=["incorrect"], on_packet=queue.put_nowait
-                )
-            except qtm_rt.QRTCommandException as exception:
-                LOG.info("exception %s", exception)
-
-            await connection.stream_frames(
-                components=["3d"], on_packet=queue.put_nowait
-            )
-
-            await asyncio.sleep(0.5)
+        async with connection:
+            await connection.get_state()
             await connection.byte_order()
-            await asyncio.sleep(0.5)
-            await connection.stream_frames_stop()
-            queue.put_nowait(None)
 
-            await connection.get_parameters(parameters=["3d"])
-            await connection.stop()
+            async with qtm_rt.TakeControl(connection, "password"):
 
-            await connection.await_event()
+                result = await connection.close()
+                if result == b"Closing connection":
+                    await connection.await_event(qtm_rt.QRTEvent.EventConnectionClosed)
 
-            await connection.new()
-            await connection.await_event(qtm_rt.QRTEvent.EventConnected)
+                await connection.load(QTM_FILE)
 
-            await connection.start()
-            await connection.await_event(qtm_rt.QRTEvent.EventWaitingForTrigger)
+                await connection.start(rtfromfile=True)
 
-            await connection.trig()
-            await connection.await_event(qtm_rt.QRTEvent.EventCaptureStarted)
+                (await connection.get_current_frame(components=["3d"])).get_3d_markers()
 
-            await asyncio.sleep(0.5)
+                queue = asyncio.Queue()
 
-            await connection.set_qtm_event()
-            await asyncio.sleep(0.001)
-            await connection.set_qtm_event("with_label")
+                asyncio.ensure_future(packet_receiver(queue))
 
-            await asyncio.sleep(0.5)
+                try:
+                    await connection.stream_frames(
+                        components=["incorrect"], on_packet=queue.put_nowait
+                    )
+                except qtm_rt.QRTCommandException as exception:
+                    LOG.info("exception %s", exception)
 
-            await connection.stop()
-            await connection.await_event(qtm_rt.QRTEvent.EventCaptureStopped)
+                await connection.stream_frames(
+                    components=["3d"], on_packet=queue.put_nowait
+                )
 
-            await connection.save(r"measurement.qtm")
+                await asyncio.sleep(0.5)
+                await connection.byte_order()
+                await asyncio.sleep(0.5)
+                await connection.stream_frames_stop()
+                queue.put_nowait(None)
 
-            await asyncio.sleep(3)
+                await connection.get_parameters(parameters=["3d"])
+                await connection.stop()
 
-            await connection.close()
+                await connection.await_event()
 
-        connection.disconnect()
+                await connection.new()
+                await connection.await_event(qtm_rt.QRTEvent.EventConnected)
+
+                await connection.start()
+                await connection.await_event(qtm_rt.QRTEvent.EventWaitingForTrigger)
+
+                await connection.trig()
+                await connection.await_event(qtm_rt.QRTEvent.EventCaptureStarted)
+
+                await asyncio.sleep(0.5)
+
+                await connection.set_qtm_event()
+                await asyncio.sleep(0.001)
+                await connection.set_qtm_event("with_label")
+
+                await asyncio.sleep(0.5)
+
+                await connection.stop()
+                await connection.await_event(qtm_rt.QRTEvent.EventCaptureStopped)
+
+                await connection.save(r"measurement.qtm")
+
+                await asyncio.sleep(3)
+
+                await connection.close()
 
 
 def parse_args():

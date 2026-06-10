@@ -53,7 +53,7 @@ async def main():
     if connection is None:
         return -1
 
-    async with qtm_rt.TakeControl(connection, "password"):
+    async with connection, qtm_rt.TakeControl(connection, "password"):
 
         state = await connection.get_state()
         if state != qtm_rt.QRTEvent.EventConnected:

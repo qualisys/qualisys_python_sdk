@@ -23,11 +23,12 @@ async def main():
     if connection is None:
         return
 
-    await connection.stream_frames(components=["3d"], on_packet=on_packet)
+    async with connection:
+        await connection.stream_frames(components=["3d"], on_packet=on_packet)
 
-    # stream_frames returns immediately after registering the callback; keep the
-    # loop alive so packets keep arriving. Ctrl-C to stop.
-    await asyncio.Event().wait()
+        # stream_frames returns immediately after registering the callback; keep the
+        # loop alive so packets keep arriving. Ctrl-C to stop.
+        await asyncio.Event().wait()
 
 
 if __name__ == "__main__":

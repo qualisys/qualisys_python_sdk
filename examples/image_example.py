@@ -44,21 +44,20 @@ async def main(password, target_camera_id, output_path):
     if connection is None:
         raise RuntimeError("Failed to connect")
 
-    settings = await connection.get_parameters(parameters=["image"])
-    updated_settings = enable_disable_cameras(output_path, target_camera_id, settings)
+    async with connection:
+        settings = await connection.get_parameters(parameters=["image"])
+        updated_settings = enable_disable_cameras(output_path, target_camera_id, settings)
 
-    async with qtm_rt.TakeControl(connection, password):
-        logging.debug("%s", await connection.send_xml(updated_settings))
+        async with qtm_rt.TakeControl(connection, password):
+            logging.debug("%s", await connection.send_xml(updated_settings))
 
-        frame = await connection.get_current_frame(components=["image"])
-        info, images = frame.get_image()
-        logging.info("%s", info)
-        logging.info("%s", images[0][0])
-        with open(output_path, "wb") as f:
-            logging.info("Writing %s", output_path)
-            f.write(images[0][1])
-
-    connection.disconnect()
+            frame = await connection.get_current_frame(components=["image"])
+            info, images = frame.get_image()
+            logging.info("%s", info)
+            logging.info("%s", images[0][0])
+            with open(output_path, "wb") as f:
+                logging.info("Writing %s", output_path)
+                f.write(images[0][1])
 
 
 if __name__ == "__main__":

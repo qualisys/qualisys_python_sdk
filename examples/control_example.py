@@ -23,7 +23,7 @@ async def setup():
     if connection is None:
         return -1
 
-    async with qtm_rt.TakeControl(connection, "password"):
+    async with connection, qtm_rt.TakeControl(connection, "password"):
         state = await connection.get_state()
         if state != qtm_rt.QRTEvent.EventConnected:
             await connection.new()
@@ -48,8 +48,6 @@ async def setup():
         await connection.save("Demo.qtm")
 
         LOG.info("Measurement saved to Demo.qtm")
-
-    connection.disconnect()
 
 if __name__ == "__main__":
     asyncio.run(setup())

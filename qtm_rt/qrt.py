@@ -45,9 +45,16 @@ class QRTConnection(object):
         self._protocol = protocol
         self._timeout = timeout
 
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        self.disconnect()
+
     def disconnect(self):
-        """Disconnect from QTM."""
-        self._protocol.transport.close()
+        """Disconnect from QTM. Safe to call multiple times."""
+        if self._protocol.transport is not None:
+            self._protocol.transport.close()
 
     def has_transport(self):
         """ Check if connected to QTM """
