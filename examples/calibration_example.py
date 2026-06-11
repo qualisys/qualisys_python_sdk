@@ -16,7 +16,7 @@ async def setup():
     if connection is None:
         return -1
 
-    async with qtm_rt.TakeControl(connection, "password"):
+    async with connection, qtm_rt.TakeControl(connection, "password"):
 
         state = await connection.get_state()
         if state != qtm_rt.QRTEvent.EventConnected:
@@ -37,8 +37,8 @@ async def setup():
             root = ET.fromstring(cal_response)
             print(ET.tostring(root, pretty_print=True).decode())
 
-    # tell qtm to stop streaming
-    await connection.stream_frames_stop()
+        # tell qtm to stop streaming
+        await connection.stream_frames_stop()
 
 if __name__ == "__main__":
     asyncio.run(setup())

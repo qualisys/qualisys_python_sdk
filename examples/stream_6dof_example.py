@@ -35,59 +35,60 @@ async def main(qtm_file):
         print("Failed to connect")
         return
 
-    # Take control of qtm, context manager will automatically release control after scope end
-    async with qtm_rt.TakeControl(connection, "password"):
+    async with connection:
+        # Take control of qtm, context manager will automatically release control after scope end
+        async with qtm_rt.TakeControl(connection, "password"):
 
-        realtime = False
+            realtime = False
 
-        if realtime:
-            # Start new realtime
-            await connection.new()
-        else:
-            # Load qtm file
-            await connection.load(qtm_file)
+            if realtime:
+                # Start new realtime
+                await connection.new()
+            else:
+                # Load qtm file
+                await connection.load(qtm_file)
 
-            # start rtfromfile
-            await connection.start(rtfromfile=True)
+                # start rtfromfile
+                await connection.start(rtfromfile=True)
 
-    # Get 6dof settings from qtm
-    xml_string = await connection.get_parameters(parameters=["6d"])
-    body_index = create_body_index(xml_string)
+        # Get 6dof settings from qtm
+        xml_string = await connection.get_parameters(parameters=["6d"])
+        body_index = create_body_index(xml_string)
 
-    print(
-        "{} of {} 6DoF bodies enabled".format(
-            body_enabled_count(xml_string), len(body_index)
-        )
-    )
-
-    wanted_body = "L-frame"
-
-    def on_packet(packet):
-        info, bodies = packet.get_6d()
         print(
-            "Framenumber: {} - Body count: {}".format(
-                packet.framenumber, info.body_count
+            "{} of {} 6DoF bodies enabled".format(
+                body_enabled_count(xml_string), len(body_index)
             )
         )
 
-        if wanted_body is not None and wanted_body in body_index:
-            # Extract one specific body
-            wanted_index = body_index[wanted_body]
-            position, rotation = bodies[wanted_index]
-            print("{} - Pos: {} - Rot: {}".format(wanted_body, position, rotation))
-        else:
-            # Print all bodies
-            for position, rotation in bodies:
-                print("Pos: {} - Rot: {}".format(position, rotation))
+        wanted_body = "L-frame"
 
-    # Start streaming frames
-    await connection.stream_frames(components=["6d"], on_packet=on_packet)
+        def on_packet(packet):
+            info, bodies = packet.get_6d()
+            print(
+                "Framenumber: {} - Body count: {}".format(
+                    packet.framenumber, info.body_count
+                )
+            )
 
-    # Wait asynchronously 5 seconds
-    await asyncio.sleep(5)
+            if wanted_body is not None and wanted_body in body_index:
+                # Extract one specific body
+                wanted_index = body_index[wanted_body]
+                position, rotation = bodies[wanted_index]
+                print("{} - Pos: {} - Rot: {}".format(wanted_body, position, rotation))
+            else:
+                # Print all bodies
+                for position, rotation in bodies:
+                    print("Pos: {} - Rot: {}".format(position, rotation))
 
-    # Stop streaming
-    await connection.stream_frames_stop()
+        # Start streaming frames
+        await connection.stream_frames(components=["6d"], on_packet=on_packet)
+
+        # Wait asynchronously 5 seconds
+        await asyncio.sleep(5)
+
+        # Stop streaming
+        await connection.stream_frames_stop()
 
 
 def parse_args():
@@ -105,4 +106,4 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     # Run our asynchronous function until complete
-    asyncio.get_event_loop().run_until_complete(main(args.qtm_file))
+    asyncio.run(main(args.qtm_file))
