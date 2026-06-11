@@ -80,8 +80,13 @@ class QTMProtocol(asyncio.Protocol):
         if self.event_future is not None:
             raise Exception("Can't wait on multiple events!")
 
-        result = await asyncio.wait_for(self._wait_loop(event), timeout)
-        return result
+        try:
+            return await asyncio.wait_for(self._wait_loop(event), timeout)
+        finally:
+            # On timeout/cancellation the future is still queued and pending.
+            # Clear it so the next await_event isn't blocked by stale state.
+            # On success _on_event already cleared it; assignment is a no-op.
+            self.event_future = None
 
     def send_command(
         self, command, callback=True, command_type=QRTPacketType.PacketCommand

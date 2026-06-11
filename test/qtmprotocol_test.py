@@ -33,6 +33,22 @@ async def test_await_any_event_timeout(qtmprotocol: QTMProtocol):
 
 
 @pytest.mark.asyncio
+async def test_await_event_after_timeout(qtmprotocol: QTMProtocol):
+    # First call times out — previously this left event_future set, which made
+    # the next await_event raise "Can't wait on multiple events!" even though
+    # nothing was actually being awaited.
+    with pytest.raises(asyncio.TimeoutError):
+        await qtmprotocol.await_event(timeout=0.05)
+
+    # Second call must succeed; event_future was cleared on the timeout path.
+    awaitable = qtmprotocol.await_event(timeout=1)
+    asyncio.get_running_loop().call_later(
+        0, lambda: qtmprotocol._on_event(QRTEvent.EventConnected)
+    )
+    assert await awaitable == QRTEvent.EventConnected
+
+
+@pytest.mark.asyncio
 async def test_await_any_event(qtmprotocol: QTMProtocol):
     awaitable = qtmprotocol.await_event(timeout=1)
     asyncio.get_running_loop().call_later(0, lambda: qtmprotocol._on_event(QRTEvent.EventConnected))
